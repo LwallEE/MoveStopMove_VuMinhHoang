@@ -10,6 +10,7 @@ public class PlayerController : Character
     //States
     [SerializeField] private PlayerIdleState playerIdleState;
     [SerializeField] private PlayerMoveState playerMoveState;
+    [SerializeField] private PlayerAttackState playerAttackState;
     
     protected override void Awake()
     {
@@ -19,6 +20,7 @@ public class PlayerController : Character
         
         playerIdleState.OnInit(this, stateMachine,this );
         playerMoveState.OnInit(this, stateMachine, this);
+        playerAttackState.OnInit(this, stateMachine, this);
     }
 
     protected override void Start()
@@ -27,10 +29,27 @@ public class PlayerController : Character
         stateMachine.Initialize(playerIdleState);
     }
 
+    protected override void OnInit()
+    {
+        base.OnInit();
+        rigibody.isKinematic = false;
+    }
+
+    public override void OnDeath()
+    {
+        base.OnDeath();
+        rigibody.isKinematic = true;
+    }
+
     public override void ChangeFromStateToState(State fromState)
     {
         if (fromState == playerIdleState)
         {
+            if (playerIdleState.IsDetectOpponent && CheckOpponentInRange())
+            {
+                stateMachine.ChangeState(playerAttackState);
+                return;
+            }
             if (GetMoveDirectionInput() != Vector3.zero)
             {
                 stateMachine.ChangeState(playerMoveState);
@@ -46,6 +65,20 @@ public class PlayerController : Character
                 return;
             }
         }
+
+        if (fromState == playerAttackState)
+        {
+            if (GetMoveDirectionInput() != Vector3.zero)
+            {
+                stateMachine.ChangeState(playerMoveState);
+                return;
+            }
+            if (playerAttackState.IsAnimationFinish())
+            {
+                stateMachine.ChangeState(playerIdleState);
+                return;
+            }
+        }
     }
 
     public void MoveVelocity(Vector3 direction,bool isRefreshRotation)
@@ -56,7 +89,7 @@ public class PlayerController : Character
         if(isRefreshRotation)
             transform.forward = direction;
     }
-
+    
     public Vector3 GetMoveDirectionInput()
     {
         return new Vector3(joystickInput.Direction.x, 0, joystickInput.Direction.y);
