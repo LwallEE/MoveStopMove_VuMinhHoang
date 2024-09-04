@@ -10,8 +10,8 @@ public class Weapon : MonoBehaviour
    private Vector3 direction;
    private float rangeToDisappear;
    private Vector3 previousPos;
-   private Transform sender;
-   public void Init(Vector3 direction, float range, Vector3 firePoint,Transform sender)
+   private Character sender;
+   public void Init(Vector3 direction, float range, Vector3 firePoint,Character sender)
    {
       this.direction = direction;
       this.rangeToDisappear = range;
@@ -37,9 +37,10 @@ public class Weapon : MonoBehaviour
 
    protected void OnTriggerEnter(Collider other)
    {
-      if (other.CompareTag(Constants.CHARACTER_TAG) && other.transform != sender)
+      if (other.CompareTag(Constants.CHARACTER_TAG) && other.transform != sender.transform)
       {
          other.GetComponent<Character>().OnDeath();
+         sender.LevelUp();
          LazyPool.Instance.AddObjectToPool(gameObject);
       }
    }

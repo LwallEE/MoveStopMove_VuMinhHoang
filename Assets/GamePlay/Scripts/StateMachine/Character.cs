@@ -7,22 +7,25 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     public Animator Anim { get; private set; }
+    public CharacterVisual CharacterSkin { get; private set; }
     protected Collider collider;
     protected StateMachine stateMachine;
     
     //attack
-    [SerializeField] private Weapon weaponPrefab;
     [SerializeField] private Transform firingPoint;
     private AttackState currentAttackState;
 
     protected Transform target;
     private Collider[] colliderOpponent = new Collider[2];
-    [SerializeField] private float rangeCheckOpponent;
-
+    protected float rangeCheckOpponent;
+    protected int currentLevel;
+    protected float currentScale;
+    
     #region UnityEvent
     protected virtual void Awake()
     {
         Anim = GetComponentInChildren<Animator>();
+        CharacterSkin = GetComponentInChildren<CharacterVisual>();
         collider = GetComponent<Collider>();
         stateMachine = new StateMachine();
     }
@@ -53,6 +56,7 @@ public class Character : MonoBehaviour
         Debug.Log(Constants.PLAYER_LAYER_MASK.value);
         gameObject.layer = Constants.PLAYER_LAYER_MASK;
         collider.enabled = true;
+        rangeCheckOpponent = Constants.CHARACTER_BASE_RANGE_ATTACK;
     }
 
     public virtual void OnDeath()
@@ -63,6 +67,23 @@ public class Character : MonoBehaviour
     public virtual void PlayAnimation(string animationName, bool value)
     {
         Anim.SetBool(animationName, value);
+    }
+
+    public void LevelUp()
+    {
+        currentLevel++;
+        UpdateStatsAccordingToLevel();
+    }
+
+    protected virtual void UpdateStatsAccordingToLevel()
+    {
+        rangeCheckOpponent =
+            Mathf.Clamp(Constants.CHARACTER_BASE_RANGE_ATTACK * (1 + Constants.ALPHA_CHANGE_PER_LEVEL_UP * currentLevel),
+                Constants.CHARACTER_BASE_RANGE_ATTACK,Constants.CHARACTER_MAX_RANGE_ATTACK);
+        currentScale = 
+            Mathf.Clamp(1 + Constants.ALPHA_CHANGE_PER_LEVEL_UP * currentLevel,
+                1, Constants.CHARACTER_MAX_SCALE_UP);
+        transform.localScale = currentScale * Vector3.one;
     }
 
     public virtual void ChangeFromStateToState(State fromState)
@@ -118,7 +139,7 @@ public class Character : MonoBehaviour
 
     public Weapon GetWeapon()
     {
-        return LazyPool.Instance.GetObj<Weapon>(weaponPrefab.gameObject);
+        return LazyPool.Instance.GetObj<Weapon>(CharacterSkin.WeaponPrefab.gameObject);
     }
 
     public float GetRange()

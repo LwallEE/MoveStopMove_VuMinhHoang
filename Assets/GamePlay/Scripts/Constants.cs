@@ -8,7 +8,10 @@ public static class Constants
     public static LayerMask PLAYER_LAYER_MASK = LayerMask.NameToLayer("Player");
     public const string WEAPON_TAG = "Weapon";
     public const string CHARACTER_TAG = "Player";
-    
+    public const float CHARACTER_BASE_RANGE_ATTACK = 6f;
+    public const float CHARACTER_MAX_RANGE_ATTACK = 12f;
+    public const float ALPHA_CHANGE_PER_LEVEL_UP = 0.1f;
+    public const float CHARACTER_MAX_SCALE_UP = 2f;
     
     //Bot
     public const float maxRandomOffsetXPos = 5f;

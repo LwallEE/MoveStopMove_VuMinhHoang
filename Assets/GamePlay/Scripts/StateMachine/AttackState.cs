@@ -16,6 +16,6 @@ public class AttackState : State
     public virtual void TriggerAttack()
     {
         var weapon = character.GetWeapon();
-        weapon.Init(transform.forward, character.GetRange(), character.GetFiringPosition(),character.transform);
+        weapon.Init(transform.forward, character.GetRange(), character.GetFiringPosition(),character);
     }
 }

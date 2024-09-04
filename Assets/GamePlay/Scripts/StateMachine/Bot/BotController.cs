@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ReuseSystem.Helper;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -25,6 +26,12 @@ public class BotController : Character
    {
       base.Start();
       stateMachine.Initialize(botIdleState);
+   }
+
+   protected override void OnInit()
+   {
+      base.OnInit();
+      CharacterSkin.RandomSkin();
    }
 
    public override void ChangeFromStateToState(State fromState)
@@ -80,7 +87,7 @@ public class BotController : Character
 
    private float RandomNegativeAndPositive()
    {
-      if (Random.Range(0, 2) == 0) return -1f;
+      if (Helper.IsPercentTrigger(0.5f)) return -1f;
       return 1f;
    }
    
