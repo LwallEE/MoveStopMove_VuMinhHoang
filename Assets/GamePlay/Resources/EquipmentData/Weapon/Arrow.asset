@@ -17,4 +17,4 @@ MonoBehaviour:
   imageSprite: {fileID: 0}
   equipmentType: 2
   equipmentInPlayerIndex: 0
-  weaponPrefab: {fileID: 5224783255801394948, guid: 84052b18356cdd44e80b75485dc97ea9, type: 3}
+  weaponPrefab: {fileID: 3185289509216773270, guid: 7bc657090a7f40245888a3f80054b34b, type: 3}

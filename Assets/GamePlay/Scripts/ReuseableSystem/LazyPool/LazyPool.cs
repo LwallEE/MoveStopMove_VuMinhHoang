@@ -65,8 +65,8 @@ namespace ReuseSystem.ObjectPooling
 
         public void AddObjectToPool(GameObject obj)
         {
-            obj.transform.SetParent(transform);
             obj.SetActive(false);
+            obj.transform.SetParent(transform);
         }
 
         public void ReleaseObjectPool(GameObject objectPrefab)

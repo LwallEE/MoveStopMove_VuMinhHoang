@@ -22,17 +22,14 @@ public class PlayerController : Character
         playerMoveState.OnInit(this, stateMachine, this);
         playerAttackState.OnInit(this, stateMachine, this);
     }
-
-    protected override void Start()
-    {
-        base.Start();
-        stateMachine.Initialize(playerIdleState);
-    }
-
-    protected override void OnInit()
+    
+    public override void OnInit()
     {
         base.OnInit();
         rigibody.isKinematic = false;
+        currentLevel = 0;
+        indicator.Init("You", currentLevel, CharacterSkin.GetColor(), transform);
+        stateMachine.Initialize(playerIdleState);
     }
 
     public override void OnDeath()
@@ -45,7 +42,7 @@ public class PlayerController : Character
     {
         if (fromState == playerIdleState)
         {
-            if (playerIdleState.IsDetectOpponent && CheckOpponentInRange())
+            if (playerAttackState.CanAttack() && playerIdleState.IsDetectOpponent && CheckOpponentInRange())
             {
                 stateMachine.ChangeState(playerAttackState);
                 return;
@@ -79,6 +76,12 @@ public class PlayerController : Character
                 return;
             }
         }
+    }
+
+    public override void LevelUp()
+    {
+        base.LevelUp();
+        CameraController.Instance.UpdateOffset(currentLevel);
     }
 
     public void MoveVelocity(Vector3 direction,bool isRefreshRotation)

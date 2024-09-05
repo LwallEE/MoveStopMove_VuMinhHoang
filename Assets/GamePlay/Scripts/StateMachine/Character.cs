@@ -8,7 +8,7 @@ public class Character : MonoBehaviour
 {
     public Animator Anim { get; private set; }
     public CharacterVisual CharacterSkin { get; private set; }
-    protected Collider collider;
+    protected Collider colliderr;
     protected StateMachine stateMachine;
     
     //attack
@@ -19,14 +19,15 @@ public class Character : MonoBehaviour
     private Collider[] colliderOpponent = new Collider[2];
     protected float rangeCheckOpponent;
     protected int currentLevel;
-    protected float currentScale;
-    
+    public float CurrentScale { get; private set; }
+
+    protected BotIndicator indicator;
     #region UnityEvent
     protected virtual void Awake()
     {
         Anim = GetComponentInChildren<Animator>();
         CharacterSkin = GetComponentInChildren<CharacterVisual>();
-        collider = GetComponent<Collider>();
+        colliderr = GetComponent<Collider>();
         stateMachine = new StateMachine();
     }
 
@@ -51,28 +52,34 @@ public class Character : MonoBehaviour
     
     #endregion
     
-    protected virtual void OnInit()
+    public virtual void OnInit()
     {
         Debug.Log(Constants.PLAYER_LAYER_MASK.value);
         gameObject.layer = Constants.PLAYER_LAYER_MASK;
-        collider.enabled = true;
+        colliderr.enabled = true;
         rangeCheckOpponent = Constants.CHARACTER_BASE_RANGE_ATTACK;
+        CurrentScale = 1f;
+        indicator = LazyPool.Instance.GetObj<BotIndicator>(GameAssets.Instance.characterIndicator);
+        indicator.transform.SetParent(UICanvasWorld.Instance.transform);
     }
 
     public virtual void OnDeath()
     {
         Debug.Log(gameObject.name + " death");
-        collider.enabled = false;
+        colliderr.enabled = false;
+        if(indicator != null)
+            LazyPool.Instance.AddObjectToPool(indicator.gameObject);
     }
     public virtual void PlayAnimation(string animationName, bool value)
     {
         Anim.SetBool(animationName, value);
     }
 
-    public void LevelUp()
+    public virtual void LevelUp()
     {
         currentLevel++;
         UpdateStatsAccordingToLevel();
+        indicator.UpdateLevel(currentLevel);
     }
 
     protected virtual void UpdateStatsAccordingToLevel()
@@ -80,10 +87,10 @@ public class Character : MonoBehaviour
         rangeCheckOpponent =
             Mathf.Clamp(Constants.CHARACTER_BASE_RANGE_ATTACK * (1 + Constants.ALPHA_CHANGE_PER_LEVEL_UP * currentLevel),
                 Constants.CHARACTER_BASE_RANGE_ATTACK,Constants.CHARACTER_MAX_RANGE_ATTACK);
-        currentScale = 
+        CurrentScale = 
             Mathf.Clamp(1 + Constants.ALPHA_CHANGE_PER_LEVEL_UP * currentLevel,
                 1, Constants.CHARACTER_MAX_SCALE_UP);
-        transform.localScale = currentScale * Vector3.one;
+        transform.localScale = CurrentScale * Vector3.one;
     }
 
     public virtual void ChangeFromStateToState(State fromState)

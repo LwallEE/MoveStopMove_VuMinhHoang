@@ -5,6 +5,7 @@ using UnityEngine;
 public class AttackState : State
 {
     private Transform target;
+    private Weapon currentWeaponThrow;
     
     public override void Enter()
     {
@@ -15,7 +16,12 @@ public class AttackState : State
 
     public virtual void TriggerAttack()
     {
-        var weapon = character.GetWeapon();
-        weapon.Init(transform.forward, character.GetRange(), character.GetFiringPosition(),character);
+        currentWeaponThrow = character.GetWeapon();
+        currentWeaponThrow.Init(transform.forward, character.GetRange(), character.GetFiringPosition(),character,character.CurrentScale);
+    }
+
+    public bool CanAttack()
+    {
+        return currentWeaponThrow == null || currentWeaponThrow.CanThrowNewWeapon();
     }
 }

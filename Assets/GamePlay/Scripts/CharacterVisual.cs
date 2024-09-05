@@ -20,6 +20,10 @@ public class CharacterVisual : MonoBehaviour
         RandomEquipment();
     }
 
+    public Color GetColor()
+    {
+        return bodySkinnedMeshRenderer.material.color;
+    }
     private void RandomFullSkin()
     {
         
@@ -45,7 +49,7 @@ public class CharacterVisual : MonoBehaviour
         }
         //Random hair
         hairContainer.DisableAllChild();
-        if (Helper.IsPercentTrigger(0.5f))
+        if (Helper.IsPercentTrigger(0.3f))
         {
             var hairData = GameAssets.Instance.EquipmentManager.GetRandomEquipmentData(EquipmentType.Hat);
             if(hairData != null) hairContainer.GetChild(hairData.equipmentInPlayerIndex).gameObject.SetActive(true);

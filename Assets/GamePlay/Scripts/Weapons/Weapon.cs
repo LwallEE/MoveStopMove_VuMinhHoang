@@ -6,12 +6,14 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-   [SerializeField] private float speed;
-   private Vector3 direction;
-   private float rangeToDisappear;
-   private Vector3 previousPos;
-   private Character sender;
-   public void Init(Vector3 direction, float range, Vector3 firePoint,Character sender)
+   [SerializeField] protected float speed;
+   [SerializeField] protected bool isRotate;
+   [SerializeField] protected float speedRotate = 500f;
+   protected Vector3 direction;
+   protected float rangeToDisappear;
+   protected Vector3 previousPos;
+   protected Character sender;
+   public virtual void Init(Vector3 direction, float range, Vector3 firePoint,Character sender,float scale)
    {
       this.direction = direction;
       this.rangeToDisappear = range;
@@ -19,14 +21,37 @@ public class Weapon : MonoBehaviour
       transform.forward = this.direction;
       previousPos = firePoint;
       this.sender = sender;
+      transform.localScale = Vector3.one * scale;
    }
 
    private void Update()
+   {
+     WeaponBehaviour();
+   }
+
+   protected virtual void FixedUpdate()
+   {
+      if (isRotate)
+      {
+         Rotate();
+      }
+   }
+
+   public virtual bool CanThrowNewWeapon()
+   {
+      return !gameObject.activeSelf;
+   }
+
+   protected virtual void WeaponBehaviour()
    {
       transform.position += this.direction * speed * Time.deltaTime;
       CheckDisappear();
    }
 
+   protected virtual void Rotate()
+   {
+      transform.Rotate(0,Time.deltaTime*speedRotate, 0);
+   }
    protected virtual void CheckDisappear()
    {
       if (Vector3.Distance(previousPos, transform.position) > rangeToDisappear)
@@ -35,7 +60,7 @@ public class Weapon : MonoBehaviour
       }
    }
 
-   protected void OnTriggerEnter(Collider other)
+   protected virtual void OnTriggerEnter(Collider other)
    {
       if (other.CompareTag(Constants.CHARACTER_TAG) && other.transform != sender.transform)
       {

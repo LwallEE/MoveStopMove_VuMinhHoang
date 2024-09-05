@@ -1,12 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using ReuseSystem.Helper;
+using ReuseSystem.Helper.Extensions;
+using ReuseSystem.ObjectPooling;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class BotController : Character
 {
    private NavMeshAgent agent;
+
+   public string Name { get; private set; }
    //States
    [SerializeField] private BotIdleState botIdleState;
    [SerializeField] private BotMoveState botMoveState;
@@ -24,22 +30,26 @@ public class BotController : Character
 
    protected override void Start()
    {
-      base.Start();
-      stateMachine.Initialize(botIdleState);
    }
 
-   protected override void OnInit()
+   public override void OnInit()
    {
       base.OnInit();
       CharacterSkin.RandomSkin();
+      Name = GetRandomName();
+      currentLevel = Random.Range(0,SpawnManager.Instance.GetNumberDeadBot()/2);
+      UpdateStatsAccordingToLevel();
+      indicator.Init(Name, currentLevel, CharacterSkin.GetColor(), transform);
+      stateMachine.Initialize(botIdleState);
    }
+   
 
    public override void ChangeFromStateToState(State fromState)
    {
       base.ChangeFromStateToState(fromState);
       if (fromState == botIdleState)
       {
-         if (botIdleState.IsDetectOpponent)
+         if (botAttackState.CanAttack() && botIdleState.IsDetectOpponent)
          {
             stateMachine.ChangeState(botAttackState);
             return;
@@ -74,6 +84,13 @@ public class BotController : Character
    {
       base.OnDeath();
       stateMachine.ChangeState(botDeathState);
+      SpawnManager.Instance.CallbackOnBotDie();
+      Invoke(nameof(Disable), 3f);
+   }
+
+   private void Disable()
+   {
+      LazyPool.Instance.AddObjectToPool(gameObject);
    }
 
    //TO DO: Update the limit x and z position of map later
@@ -85,6 +102,7 @@ public class BotController : Character
          Random.Range(Constants.minRandomOffsetZPos , Constants.maxRandomOffsetZPos)*RandomNegativeAndPositive());
    }
 
+   //random -1f or 1 for target position of bot
    private float RandomNegativeAndPositive()
    {
       if (Helper.IsPercentTrigger(0.5f)) return -1f;
@@ -109,5 +127,10 @@ public class BotController : Character
    public void StopMoving()
    {
       agent.isStopped = true;
+   }
+
+   private string GetRandomName()
+   {
+      return GameAssets.Instance.BotNames.GetRandomElement();
    }
 }
