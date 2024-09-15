@@ -40,7 +40,7 @@ public class BotController : Character
       currentLevel = Random.Range(0,SpawnManager.Instance.GetNumberDeadBot()/2);
       UpdateStatsAccordingToLevel();
       indicator.Init(Name, currentLevel, CharacterSkin.GetColor(), transform);
-      stateMachine.Initialize(botIdleState);
+      stateMachine.Initialize(botMoveState);
    }
    
 

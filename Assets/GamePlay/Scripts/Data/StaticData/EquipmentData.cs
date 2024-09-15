@@ -7,7 +7,8 @@ public enum EquipmentType
    Pant,
    Hat,
    Weapon,
-   FullSkin
+   FullSkin,
+   Shield
 }
 [CreateAssetMenu(menuName = "MyAssets/EquipmentData/BaseEquipmentData")]
 public class EquipmentData : ScriptableObject

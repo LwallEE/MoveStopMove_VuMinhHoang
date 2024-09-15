@@ -49,7 +49,7 @@ public class Boomerang : Weapon
 
       if (other.CompareTag(Constants.CHARACTER_TAG) && isGoingBack && other.transform == sender.transform)
       {
-         LazyPool.Instance.AddObjectToPool(gameObject);
+         DestroyWeapon();
       }
    }
 }

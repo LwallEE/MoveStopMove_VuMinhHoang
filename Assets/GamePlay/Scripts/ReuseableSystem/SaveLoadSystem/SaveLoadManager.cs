@@ -15,6 +15,12 @@ namespace ReuseSystem.SaveLoadSystem
 
         public Dictionary<string, DataRecord> recordsCache = new Dictionary<string, DataRecord>();
 
+        protected override void Awake()
+        {
+            base.Awake();
+            
+        }
+
         public void Start()
         {
             PreLoadAllProfileRecordsIntoCache();
@@ -124,7 +130,7 @@ namespace ReuseSystem.SaveLoadSystem
                 string fileType = fileName.Replace($".{PROFILE_DATA_FILE_NAME_SUFFIX}", "");
                 try
                 {
-                    if (typeList[fileType] == null) continue;
+                    if (typeList[fileType] == null || recordsCache.ContainsKey(fileType)) continue;
                     
                     DataRecord record = JsonUtility.FromJson(json, typeList[fileType]) as DataRecord;
                     
@@ -157,6 +163,27 @@ namespace ReuseSystem.SaveLoadSystem
                 Directory.CreateDirectory(folderPath);
 
             return folderPath;
+        }
+        private static void ClearPersistantData()
+        {
+            //persitent folder
+            DirectoryInfo di = new DirectoryInfo(Application.persistentDataPath);
+
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+
+            foreach (DirectoryInfo dir in di.GetDirectories())
+            {
+                dir.Delete(true);
+            }
+        }
+
+        public static void ClearGameData()
+        {
+            ClearPersistantData();
+            PlayerPrefs.DeleteAll();
         }
     }
 }

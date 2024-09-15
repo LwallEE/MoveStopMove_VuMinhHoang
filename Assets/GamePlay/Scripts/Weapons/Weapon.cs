@@ -60,13 +60,23 @@ public class Weapon : MonoBehaviour
       }
    }
 
+   protected virtual void DestroyWeapon()
+   {
+      LazyPool.Instance.AddObjectToPool(gameObject);
+   }
+
    protected virtual void OnTriggerEnter(Collider other)
    {
       if (other.CompareTag(Constants.CHARACTER_TAG) && other.transform != sender.transform)
       {
          other.GetComponent<Character>().OnDeath();
          sender.LevelUp();
-         LazyPool.Instance.AddObjectToPool(gameObject);
+         DestroyWeapon();
+      }
+
+      if (other.CompareTag("Obstacle"))
+      {
+         DestroyWeapon();
       }
    }
 }

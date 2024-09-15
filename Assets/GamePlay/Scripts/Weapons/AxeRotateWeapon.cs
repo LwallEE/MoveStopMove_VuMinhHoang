@@ -31,19 +31,27 @@ public class AxeRotateWeapon : Weapon
    {
       if (isTouchGround) return;
       transform.position += this.direction * speed * Time.deltaTime + Vector3.down*speedFall*Time.deltaTime;
+      if (Vector3.Distance(previousPos, transform.position) > rangeToDisappear)
+      {
+         Vector3 pos = transform.position;
+         pos.y = 0f;
+         transform.position = pos;
+         isTouchGround = true;
+         FixRotation();
+      }
    }
 
    protected override void OnTriggerEnter(Collider other)
    {
       base.OnTriggerEnter(other);
-      if (other.CompareTag("Ground"))
+      /*if (other.CompareTag("Ground"))
       {
          isTouchGround = true;
         FixRotation();
-      }
-      if (other.CompareTag(Constants.CHARACTER_TAG) && other.transform == sender.transform)
+      }*/
+      if (other.CompareTag(Constants.CHARACTER_TAG) && other.transform == sender.transform && isTouchGround)
       {
-         LazyPool.Instance.AddObjectToPool(gameObject);
+         DestroyWeapon();
       }
    }
 

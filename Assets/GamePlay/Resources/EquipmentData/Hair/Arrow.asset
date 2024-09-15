@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Arrow
   m_EditorClassIdentifier: 
   id: arrowHair
-  cost: 0
-  imageSprite: {fileID: 0}
+  cost: 500
+  imageSprite: {fileID: 21300000, guid: d7dae949b24be9b489b89373514ab6a0, type: 3}
   equipmentType: 1
   equipmentInPlayerIndex: 1

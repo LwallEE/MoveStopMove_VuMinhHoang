@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Crown
   m_EditorClassIdentifier: 
   id: crown
-  cost: 0
-  imageSprite: {fileID: 0}
+  cost: 500
+  imageSprite: {fileID: 21300000, guid: de98da0cea171704fb486c4e1c67e27f, type: 3}
   equipmentType: 1
   equipmentInPlayerIndex: 2

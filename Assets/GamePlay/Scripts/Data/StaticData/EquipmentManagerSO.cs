@@ -28,4 +28,9 @@ public class EquipmentManagerSO : ScriptableObject
 
       return null;
    }
+
+   public List<EquipmentData> GetAllEquipmentDataOfType(EquipmentType type)
+   {
+      return data.Where(x => x.equipmentType == type).ToList();
+   }
 }

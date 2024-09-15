@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rau
   m_EditorClassIdentifier: 
   id: rau
-  cost: 0
-  imageSprite: {fileID: 0}
+  cost: 500
+  imageSprite: {fileID: 21300000, guid: 089b5df6248cd8b4d910446fdb59d539, type: 3}
   equipmentType: 1
   equipmentInPlayerIndex: 0

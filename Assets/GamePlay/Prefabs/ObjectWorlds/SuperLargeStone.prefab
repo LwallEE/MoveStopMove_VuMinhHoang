@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 187959591459853808}
   - component: {fileID: 3382747194249925559}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SuperLargeStone
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &187959591459853808
 Transform:
@@ -98,28 +98,64 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4768942967530685852, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -4768942967530685852, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3373117164561338275, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -3373117164561338275, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1541573271892307245, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -1541573271892307245, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
       propertyPath: m_Name
       value: block_stone_large2_LOD_group
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4742473837712756890, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
+      propertyPath: m_LODs.Array.data[0].screenRelativeHeight
+      value: 0.3004541
+      objectReference: {fileID: 0}
+    - target: {fileID: 4742473837712756890, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
+      propertyPath: m_LODs.Array.data[1].screenRelativeHeight
+      value: 0.19841523
+      objectReference: {fileID: 0}
+    - target: {fileID: 4742473837712756890, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
+      propertyPath: m_LODs.Array.data[2].screenRelativeHeight
+      value: 0.09809132
+      objectReference: {fileID: 0}
+    - target: {fileID: 4742473837712756890, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
+      propertyPath: m_LODs.Array.data[3].screenRelativeHeight
+      value: 0.047232673
+      objectReference: {fileID: 0}
+    - target: {fileID: 5189021851529067939, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5189021851529067939, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ece68b38520f6489599a44dab7e2a725, type: 3}
