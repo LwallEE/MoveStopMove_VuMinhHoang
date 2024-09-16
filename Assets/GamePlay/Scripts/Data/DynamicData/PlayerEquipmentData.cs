@@ -18,6 +18,7 @@ public class PlayerEquipmentStatus
 }
 public class PlayerEquipmentData : DataRecord
 {
+    private const string DEFAULT_WEAPON_ID = "axe0_weapon";
     public List<PlayerEquipmentStatus> equipmentStatus;
     public string hatEquipedId;
     public string pantEquipedId;
@@ -25,6 +26,27 @@ public class PlayerEquipmentData : DataRecord
     public string fullSkinEquipedId;
     public string weaponEquipedId;
 
+    public string GetHatEquippedId()
+    {
+        return hatEquipedId;
+    }
+    public string GetPantEquippedId()
+    {
+        return pantEquipedId;
+    }
+    public string GetShieldEquippedId()
+    {
+        return shieldEquipedId;
+    }
+    public string GetFullSkinEquippedId()
+    {
+        return fullSkinEquipedId;
+    }
+    public string GetWeaponEquippedId()
+    {
+        if (string.IsNullOrEmpty(weaponEquipedId)) return DEFAULT_WEAPON_ID;
+        return weaponEquipedId;
+    }
     public void UpdateEquipmentStatus(string equipmentId, bool isUnlock)
     {
         bool isOnList = false;

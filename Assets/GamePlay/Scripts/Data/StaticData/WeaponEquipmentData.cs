@@ -6,4 +6,6 @@ using UnityEngine;
 public class WeaponEquipmentData : EquipmentData
 {
     public Weapon weaponPrefab;
+    public string weaponName;
+    public string weaponDescription;
 }

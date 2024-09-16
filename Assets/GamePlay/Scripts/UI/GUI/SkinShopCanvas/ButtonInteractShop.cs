@@ -4,7 +4,12 @@ using ReuseSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+public enum ItemStatusEnum
+{
+    Buy,
+    Equip,
+    UnEquip
+}
 public class ButtonInteractShop : MonoBehaviour
 {
     [SerializeField] private Color selectButtonColor;
@@ -20,12 +25,7 @@ public class ButtonInteractShop : MonoBehaviour
     private SlotItemLayout currentItemChoose;
 
     private ItemStatusEnum currentItemStatus;
-    public enum ItemStatusEnum
-    {
-        Buy,
-        Equip,
-        UnEquip
-    }
+   
     public void UpdateButtonAccordingToItem(SlotItemLayout item)
     {
         DisableAllText();

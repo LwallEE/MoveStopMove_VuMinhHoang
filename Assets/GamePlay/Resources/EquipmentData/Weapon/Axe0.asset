@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91e975c1771768a4587a5485082e41a8, type: 3}
-  m_Name: Arrow
+  m_Name: Axe0
   m_EditorClassIdentifier: 
-  id: arrow_weapon
-  cost: 200
-  imageSprite: {fileID: 21300000, guid: f1197769bcc2e7f46a98f3246c5f2f98, type: 3}
+  id: axe0_weapon
+  cost: 0
+  imageSprite: {fileID: 21300000, guid: f3849192abda0c24492ef08c86fd668b, type: 3}
   equipmentType: 2
-  equipmentInPlayerIndex: 0
-  weaponPrefab: {fileID: 3185289509216773270, guid: 7bc657090a7f40245888a3f80054b34b, type: 3}
-  weaponName: Arrow
+  equipmentInPlayerIndex: 1
+  weaponPrefab: {fileID: 3046346735098004901, guid: 1e16687995d99864b98989860f525662, type: 3}
+  weaponName: Axe Normal
   weaponDescription: 

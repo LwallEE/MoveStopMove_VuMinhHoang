@@ -38,15 +38,16 @@ public class PlayerController : Character
     {
         var playerData = PlayerSavingData.GetPlayerEquipmentData();
         var equipmentManager = GameAssets.Instance.EquipmentManager;
-        if (!string.IsNullOrEmpty(playerData.fullSkinEquipedId))
+        EquipSkin(equipmentManager.GetEquipmentDataById(playerData.GetWeaponEquippedId()),EquipmentType.Weapon);
+        if (!string.IsNullOrEmpty(playerData.GetFullSkinEquippedId()))
         {
-            EquipSkin(equipmentManager.GetEquipmentDataById(playerData.fullSkinEquipedId),EquipmentType.FullSkin);
+            EquipSkin(equipmentManager.GetEquipmentDataById(playerData.GetFullSkinEquippedId()),EquipmentType.FullSkin);
             return;
         }
         CharacterSkin.ResetSkinToNormal();
-        EquipSkin(equipmentManager.GetEquipmentDataById(playerData.hatEquipedId),EquipmentType.Hat);
-        EquipSkin(equipmentManager.GetEquipmentDataById(playerData.pantEquipedId),EquipmentType.Pant);
-        EquipSkin(equipmentManager.GetEquipmentDataById(playerData.shieldEquipedId), EquipmentType.Shield);
+        EquipSkin(equipmentManager.GetEquipmentDataById(playerData.GetHatEquippedId()),EquipmentType.Hat);
+        EquipSkin(equipmentManager.GetEquipmentDataById(playerData.GetPantEquippedId()),EquipmentType.Pant);
+        EquipSkin(equipmentManager.GetEquipmentDataById(playerData.GetShieldEquippedId()), EquipmentType.Shield);
     }
 
     public override void OnDeath()
@@ -123,6 +124,7 @@ public class PlayerController : Character
     public void ReturnToHome()
     {
         LoadAllSkin();
+        CharacterSkin.gameObject.SetActive(true);
         PlayAnimation(danceAnim, false); 
         stateMachine.ChangeState(playerIdleState);
         rigibody.isKinematic = true;
@@ -131,10 +133,16 @@ public class PlayerController : Character
 
     public void ReturnSkinShop()
     {
+        CharacterSkin.gameObject.SetActive(true);
         stateMachine.CurrentState.Exit();
         rigibody.isKinematic = true;
         PlayAnimation(danceAnim, true); 
         rangeBotIndicator.SetActive(false);
+    }
+
+    public void ReturnToWeaponShop()
+    {
+        CharacterSkin.gameObject.SetActive(false);
     }
 
     public void EquipSkin(EquipmentData data,EquipmentType type)

@@ -53,10 +53,10 @@ public class SkinShopCanvas : UICanvas
         coinBar.UpdateCoin();
     }
     //function to interact with item: buy, equip, unequipped
-    public void InteractItem(SlotItemLayout itemSlot, ButtonInteractShop.ItemStatusEnum statusInteract)
+    public void InteractItem(SlotItemLayout itemSlot, ItemStatusEnum statusInteract)
     {
         var data = PlayerSavingData.GetPlayerEquipmentData();
-        if (statusInteract == ButtonInteractShop.ItemStatusEnum.Buy)
+        if (statusInteract == ItemStatusEnum.Buy)
         {
             if (PlayerSavingData.PlayerCurrentCoin >= itemSlot.currentData.cost)
             {
@@ -64,12 +64,12 @@ public class SkinShopCanvas : UICanvas
                 data.UpdateEquipmentStatus(itemSlot.currentData.id, true);
             }
         }
-        else if (statusInteract == ButtonInteractShop.ItemStatusEnum.Equip)
+        else if (statusInteract == ItemStatusEnum.Equip)
         {
             data.EquipSkin(itemSlot.currentData.id, itemSlot.currentData.equipmentType);
            
         }
-        else if (statusInteract == ButtonInteractShop.ItemStatusEnum.UnEquip)
+        else if (statusInteract == ItemStatusEnum.UnEquip)
         {
             data.EquipSkin("", itemSlot.currentData.equipmentType);
         }

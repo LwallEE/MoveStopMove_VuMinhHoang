@@ -48,6 +48,11 @@ public class Weapon : MonoBehaviour
       CheckDisappear();
    }
 
+   public float GetSpeed()
+   {
+      return speed;
+   }
+
    protected virtual void Rotate()
    {
       transform.Rotate(0,Time.deltaTime*speedRotate, 0);

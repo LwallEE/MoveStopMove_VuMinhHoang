@@ -56,12 +56,19 @@ public class GameController : Singleton<GameController>
 
         if (currentGameState == GameState.SkinShop)
         {
-            LazyPool.Instance.ReleaseAll();
             UIManager.Instance.CloseAll();
             UIManager.Instance.OpenUI<SkinShopCanvas>();
             
             CameraController.Instance.ChangeCameraMode(CameraMode.SkinShopMode);
             mainPlayer.ReturnSkinShop();
+        }
+
+        if (currentGameState == GameState.WeaponShop)
+        {
+            UIManager.Instance.CloseAll();
+            UIManager.Instance.OpenUI<WeaponShopCanvas>();
+            
+            mainPlayer.ReturnToWeaponShop();
         }
     }
 
