@@ -36,6 +36,7 @@ public class BotIndicator : MonoBehaviour
 
     private void ScreenOverlayFollow()
     {
+        if (target == null) return;
         Vector3 screenPos = mainCamera.WorldToScreenPoint(target.position + offsetY);
         bool isOffScreen = screenPos.x < 0 || screenPos.x > Screen.width || screenPos.y < 0 || screenPos.y > Screen.height;
         
@@ -63,6 +64,8 @@ public class BotIndicator : MonoBehaviour
 
     public void Init(string name, int currentLevel,Color color,Transform target)
     {
+        if(mainCamera != null)
+            indicator.position = mainCamera.WorldToScreenPoint(target.position + offsetY);
         this.target = target;
         nameTxt.text = name;
         currentLevelTxt.text = currentLevel.ToString();

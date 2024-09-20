@@ -7,18 +7,14 @@ using UnityEngine;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
-    [SerializeField] private int totalNumberOfBot;
-    [SerializeField] private int maxNumberOfBotAtSameTime;
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private int numberOfTimeTry;
     [SerializeField] private float radiusCheck;
 
+    private Map currentMap;
     private int currentNumberBotInMap;
     private int deadCounter;
-    private void Start()
-    {
-        LoadMap();
-    }
+    
 
     private void SpawnBot()
     {
@@ -40,7 +36,7 @@ public class SpawnManager : Singleton<SpawnManager>
         }
         if(isSpawnSuccess) yield break;
         
-        var pos = Map.Instance.GetRandomPosInMap();
+        var pos = currentMap.GetRandomPosInMap();
         currentNumberBotInMap++;
         var bot = LazyPool.Instance.GetObj<Character>(GameAssets.Instance.botPrefab);
         bot.transform.position = pos;
@@ -50,7 +46,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         for (int i = 0; i < numberOfTimeTry; i++)
         {
-            var pos = Map.Instance.GetRandomPosInMap();
+            var pos = currentMap.GetRandomPosInMap();
             if (!Physics.CheckSphere(pos, radiusCheck, obstacleLayer))
             {
                 currentNumberBotInMap++;
@@ -68,22 +64,30 @@ public class SpawnManager : Singleton<SpawnManager>
     public void CallbackOnBotDie()
     {
         deadCounter++;
-        if (currentNumberBotInMap < totalNumberOfBot)
+        if (currentNumberBotInMap < currentMap.GetTotalNumberBot() && GameController.Instance.IsInState(GameState.GamePlay))
         {
             SpawnBot();
         }
-        Debug.Log($"Number of bot remain {totalNumberOfBot-deadCounter}".AddColor(Color.yellow));
+        Debug.Log($"Number of bot remain {currentMap.GetTotalNumberBot()-deadCounter}".AddColor(Color.yellow));
+        UIManager.Instance.GetUI<GamePlayCanvas>().UpdateAliveText(currentMap.GetTotalNumberOfPlayer() - deadCounter);
+        if (deadCounter >= currentMap.GetTotalNumberBot())
+        {
+            GameController.Instance.ChangeGameState(GameState.GameWin);
+        }
     }
 
     public int GetNumberDeadBot()
     {
         return deadCounter;
     }
-    public void LoadMap()
+    
+    public void LoadMap(Map map)
     {
+        this.currentMap = map;
+        UIManager.Instance.GetUI<GamePlayCanvas>().UpdateAliveText(currentMap.GetTotalNumberBot());
         currentNumberBotInMap = 0;
         deadCounter = 0;
-        for (int i = 0; i < maxNumberOfBotAtSameTime; i++)
+        for (int i = 0; i < currentMap.GetMaxNumberOfBotAtSameTime(); i++)
         {
             SpawnBot();
         }

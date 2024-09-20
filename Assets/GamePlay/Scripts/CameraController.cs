@@ -73,6 +73,11 @@ public class CameraController : Singleton<CameraController>
         {
             UpdateAngleAndOffset(offsetShopSkinMode, angleShopSkinMode);
         }
+
+        if (mode == CameraMode.GameplayMode)
+        {
+            UpdateAngleAndOffset(offset,angleGameplayMode);
+        }
     }
 
     private void UpdateAngleAndOffset(Vector3 offset, Vector3 angle)

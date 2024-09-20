@@ -9,6 +9,7 @@ public class Weapon : MonoBehaviour
    [SerializeField] protected float speed;
    [SerializeField] protected bool isRotate;
    [SerializeField] protected float speedRotate = 500f;
+   [SerializeField] protected bool isAlwaysCanThrow;
    protected Vector3 direction;
    protected float rangeToDisappear;
    protected Vector3 previousPos;
@@ -39,6 +40,7 @@ public class Weapon : MonoBehaviour
 
    public virtual bool CanThrowNewWeapon()
    {
+      if (isAlwaysCanThrow) return true;
       return !gameObject.activeSelf;
    }
 
@@ -74,7 +76,9 @@ public class Weapon : MonoBehaviour
    {
       if (other.CompareTag(Constants.CHARACTER_TAG) && other.transform != sender.transform)
       {
-         other.GetComponent<Character>().OnDeath();
+         var character = other.GetComponent<Character>();
+         character.SetKillerName(sender.Name);
+         character.OnDeath();
          sender.LevelUp();
          DestroyWeapon();
       }

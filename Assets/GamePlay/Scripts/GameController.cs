@@ -23,6 +23,7 @@ public class GameController : Singleton<GameController>
     protected override void Awake()
     {
         base.Awake();
+        Application.targetFrameRate = 60;
         mainPlayer = FindObjectOfType<PlayerController>();
         //SaveLoadManager.ClearGameData();
         PlayerSavingData.PlayerCurrentCoin = 10000;
@@ -50,8 +51,11 @@ public class GameController : Singleton<GameController>
             UIManager.Instance.CloseAll();
             UIManager.Instance.OpenUI<GameMenuCanvas>();
             
-            CameraController.Instance.ChangeCameraMode(CameraMode.HomeMode);
+           
+            LevelManager.Instance.LoadCurrentMap();
             mainPlayer.ReturnToHome();
+            CameraController.Instance.ChangeCameraMode(CameraMode.HomeMode);
+
         }
 
         if (currentGameState == GameState.SkinShop)
@@ -69,6 +73,43 @@ public class GameController : Singleton<GameController>
             UIManager.Instance.OpenUI<WeaponShopCanvas>();
             
             mainPlayer.ReturnToWeaponShop();
+        }
+
+        if (currentGameState == GameState.GamePlay)
+        {
+            UIManager.Instance.CloseAll();
+            UIManager.Instance.OpenUI<GamePlayCanvas>();
+            
+            mainPlayer.ReturnToGamePlay();
+            CameraController.Instance.ChangeCameraMode(CameraMode.GameplayMode);
+            SpawnManager.Instance.LoadMap(LevelManager.Instance.GetCurrentMap());
+        }
+
+        if (currentGameState == GameState.GameLose)
+        {
+            
+            UIManager.Instance.CloseAll();
+            int deadBot = SpawnManager.Instance.GetNumberDeadBot();
+            int total = LevelManager.Instance.GetCurrentMap().GetTotalNumberOfPlayer();
+            PlayerSavingData.PlayerBestScore = total - deadBot;
+            UIManager.Instance.GetUI<PopupEndGameCanvas>().ShowPopupFailed(deadBot, mainPlayer.KillerName,
+                 total- deadBot);
+
+            PlayerSavingData.PlayerBestScore = Mathf.Max(PlayerSavingData.PlayerBestScore, total - deadBot);
+            UIManager.Instance.OpenUI<PopupEndGameCanvas>();
+        }
+        if (currentGameState == GameState.GameWin)
+        {
+            
+            UIManager.Instance.CloseAll();
+            int deadBot = SpawnManager.Instance.GetNumberDeadBot();
+            int total = LevelManager.Instance.GetCurrentMap().GetTotalNumberOfPlayer();
+            PlayerSavingData.PlayerBestScore = total - deadBot;
+            UIManager.Instance.GetUI<PopupEndGameCanvas>().ShowPopupWin(deadBot);
+
+            PlayerSavingData.PlayerBestScore = 1;
+            PlayerSavingData.PlayerCurrentMapIndex += 1;
+            UIManager.Instance.OpenUI<PopupEndGameCanvas>();
         }
     }
 

@@ -286,7 +286,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5055611316872970923}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7598009415488998285}
+        m_TargetAssemblyTypeName: GameMenuCanvas, Assembly-CSharp
+        m_MethodName: GamePlayClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5055611315129814002
 GameObject:
   m_ObjectHideFlags: 0
@@ -1456,6 +1468,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDestroyOnClose: 0
+  zoneTxt: {fileID: 5055611315180814090}
+  bestTxt: {fileID: 5055611316058098196}
 --- !u!1 &5055611316014643639
 GameObject:
   m_ObjectHideFlags: 0

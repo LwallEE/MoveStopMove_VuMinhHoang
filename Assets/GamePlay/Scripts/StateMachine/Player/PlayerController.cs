@@ -12,6 +12,7 @@ public class PlayerController : Character
     [SerializeField] private PlayerIdleState playerIdleState;
     [SerializeField] private PlayerMoveState playerMoveState;
     [SerializeField] private PlayerAttackState playerAttackState;
+    [SerializeField] private PlayerDeadState playerDeadState;
     [SerializeField] private string danceAnim;
     protected override void Awake()
     {
@@ -22,6 +23,7 @@ public class PlayerController : Character
         playerIdleState.OnInit(this, stateMachine,this );
         playerMoveState.OnInit(this, stateMachine, this);
         playerAttackState.OnInit(this, stateMachine, this);
+        playerDeadState.OnInit(this, stateMachine, this);
     }
     
     public override void OnInit()
@@ -29,9 +31,9 @@ public class PlayerController : Character
         base.OnInit();
         rigibody.isKinematic = false;
         currentLevel = 0;
-        indicator.Init("You", currentLevel, CharacterSkin.GetColor(), transform);
+        Name = "You";
+        indicator.Init(Name, currentLevel, CharacterSkin.GetColor(), transform);
         stateMachine.Initialize(playerIdleState);
-        LoadAllSkin();
     }
 
     private void LoadAllSkin()
@@ -54,6 +56,8 @@ public class PlayerController : Character
     {
         base.OnDeath();
         rigibody.isKinematic = true;
+        stateMachine.ChangeState(playerDeadState);
+        GameController.Instance.ChangeGameState(GameState.GameLose);
     }
 
     public override void ChangeFromStateToState(State fromState)
@@ -96,12 +100,28 @@ public class PlayerController : Character
         }
     }
 
+    protected override void UpdateTargetDetect(Transform newTarget)
+    {
+        if (target != newTarget)
+        {
+            if(target != null) target.GetComponent<BotController>().ActiveBotInRangeIndicator(false);
+            if(newTarget != null) newTarget.GetComponent<BotController>().ActiveBotInRangeIndicator(true);
+        }
+        base.UpdateTargetDetect(newTarget);
+    }
+
     public override void LevelUp()
     {
         base.LevelUp();
         CameraController.Instance.UpdateOffset(currentLevel);
     }
 
+    private void BackToNormal()
+    {
+        currentLevel = 0;
+        UpdateStatsAccordingToLevel();
+        indicator.UpdateLevel(currentLevel);
+    }
     public void MoveVelocity(Vector3 direction,bool isRefreshRotation)
     {
         direction.Normalize();
@@ -123,12 +143,16 @@ public class PlayerController : Character
 
     public void ReturnToHome()
     {
+        transform.position = LevelManager.Instance.GetCurrentMap().GetPlayerPosition();
         LoadAllSkin();
+        BackToNormal();
+        transform.forward = Vector3.back;
         CharacterSkin.gameObject.SetActive(true);
         PlayAnimation(danceAnim, false); 
         stateMachine.ChangeState(playerIdleState);
         rigibody.isKinematic = true;
         rangeBotIndicator.SetActive(false);
+        if(indicator != null) indicator.gameObject.SetActive(false);
     }
 
     public void ReturnSkinShop()
@@ -143,6 +167,19 @@ public class PlayerController : Character
     public void ReturnToWeaponShop()
     {
         CharacterSkin.gameObject.SetActive(false);
+    }
+
+    public void ReturnToGamePlay()
+    {
+        rigibody.isKinematic = false;
+        colliderr.enabled = true;
+        stateMachine.ChangeState(playerIdleState);
+        rangeBotIndicator.SetActive(true);
+        if (indicator != null)
+        {
+            indicator.gameObject.SetActive(true);
+            indicator.transform.SetParent(UICanvasWorld.Instance.transform);
+        }
     }
 
     public void EquipSkin(EquipmentData data,EquipmentType type)

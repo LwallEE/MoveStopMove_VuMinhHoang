@@ -10,9 +10,10 @@ using Random = UnityEngine.Random;
 
 public class BotController : Character
 {
+   [SerializeField] private GameObject botInRangeIndicator;
    private NavMeshAgent agent;
 
-   public string Name { get; private set; }
+   
    //States
    [SerializeField] private BotIdleState botIdleState;
    [SerializeField] private BotMoveState botMoveState;
@@ -35,14 +36,16 @@ public class BotController : Character
    public override void OnInit()
    {
       base.OnInit();
+      ActiveBotInRangeIndicator(false);
       CharacterSkin.RandomSkin();
       Name = GetRandomName();
-      currentLevel = Random.Range(0,SpawnManager.Instance.GetNumberDeadBot()/2);
+      currentLevel = Random.Range(0,SpawnManager.Instance.GetNumberDeadBot());
       UpdateStatsAccordingToLevel();
       indicator.Init(Name, currentLevel, CharacterSkin.GetColor(), transform);
       stateMachine.Initialize(botMoveState);
    }
-   
+
+  
 
    public override void ChangeFromStateToState(State fromState)
    {
@@ -96,10 +99,12 @@ public class BotController : Character
    //TO DO: Update the limit x and z position of map later
    public Vector3 GetRandomPositionInMap()
    {
-      return transform.position + new Vector3(
+      /*return transform.position + new Vector3(
          Random.Range(Constants.minRandomOffsetXPos, Constants.maxRandomOffsetXPos) *RandomNegativeAndPositive(),
          0,
-         Random.Range(Constants.minRandomOffsetZPos , Constants.maxRandomOffsetZPos)*RandomNegativeAndPositive());
+         Random.Range(Constants.minRandomOffsetZPos , Constants.maxRandomOffsetZPos)*RandomNegativeAndPositive());*/
+      return GetRandomNavMeshPosition(transform.position,
+         Random.Range(Constants.RANGE_BOT_RANDOM_MIN, Constants.RANGE_BOT_RANDOM_MAX));
    }
 
    //random -1f or 1 for target position of bot
@@ -107,6 +112,18 @@ public class BotController : Character
    {
       if (Helper.IsPercentTrigger(0.5f)) return -1f;
       return 1f;
+   }
+   private Vector3 GetRandomNavMeshPosition(Vector3 origin, float distance)
+   {
+      // Generate a random direction
+      Vector3 randomDirection = Random.insideUnitSphere * distance;
+      randomDirection += origin;
+
+      NavMeshHit hit;
+      NavMesh.SamplePosition(randomDirection, out hit, distance, 1);
+      Vector3 finalPosition = hit.position;
+
+      return finalPosition; // Return zero if no valid position found
    }
    
    public void MoveToPosition(Vector3 pos)
@@ -117,7 +134,25 @@ public class BotController : Character
          agent.SetDestination(pos);
       }
    }
+   public float GetPathDistance(Vector3 targetPosition)
+   {
+      NavMeshPath path = new NavMeshPath();
+      if (agent.CalculatePath(targetPosition, path))
+      {
+         float distance = 0.0f;
 
+         if (path.corners.Length > 1)
+         {
+            for (int i = 0; i < path.corners.Length - 1; i++)
+            {
+               distance += Vector3.Distance(path.corners[i], path.corners[i + 1]);
+            }
+         }
+
+         return distance;
+      }
+      return -1f; // Return infinity if the path is invalid
+   }
    public bool IsReachDestination()
    {
       if (!agent.isOnNavMesh) return false;
@@ -132,5 +167,9 @@ public class BotController : Character
    private string GetRandomName()
    {
       return GameAssets.Instance.BotNames.GetRandomElement();
+   }
+   public void ActiveBotInRangeIndicator(bool isActive)
+   {
+      botInRangeIndicator.SetActive(isActive);
    }
 }

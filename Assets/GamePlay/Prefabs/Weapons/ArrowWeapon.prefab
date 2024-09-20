@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5224783255801394948, guid: 84052b18356cdd44e80b75485dc97ea9, type: 3}
+      propertyPath: isAlwaysCanThrow
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5224783255801394949, guid: 84052b18356cdd44e80b75485dc97ea9, type: 3}
       propertyPath: m_Name
       value: ArrowWeapon

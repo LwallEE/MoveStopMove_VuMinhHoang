@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    public string KillerName { get; private set; }
+    public string Name { get; protected set; }
     public Animator Anim { get; private set; }
     public CharacterVisual CharacterSkin { get; private set; }
     protected Collider colliderr;
@@ -40,13 +42,13 @@ public class Character : MonoBehaviour
 
     protected virtual void Update()
     {
-        if(stateMachine.CurrentState != null)
+        if(stateMachine.CurrentState != null && GameController.Instance.IsInState(GameState.GamePlay))
             stateMachine.CurrentState.LogicUpdate();
     }
 
     protected virtual void FixedUpdate()
     {
-        if(stateMachine.CurrentState != null)
+        if(stateMachine.CurrentState != null && GameController.Instance.IsInState(GameState.GamePlay))
             stateMachine.CurrentState.PhysicsUpdate();
     }
     
@@ -54,7 +56,7 @@ public class Character : MonoBehaviour
     
     public virtual void OnInit()
     {
-        Debug.Log(Constants.PLAYER_LAYER_MASK.value);
+        //Debug.Log(Constants.PLAYER_LAYER_MASK.value);
         gameObject.layer = Constants.PLAYER_LAYER_MASK;
         colliderr.enabled = true;
         rangeCheckOpponent = Constants.CHARACTER_BASE_RANGE_ATTACK;
@@ -65,7 +67,7 @@ public class Character : MonoBehaviour
 
     public virtual void OnDeath()
     {
-        Debug.Log(gameObject.name + " death");
+        //Debug.Log(gameObject.name + " death");
         colliderr.enabled = false;
         if(indicator != null)
             LazyPool.Instance.AddObjectToPool(indicator.gameObject);
@@ -109,12 +111,17 @@ public class Character : MonoBehaviour
     {
         var numberCast = Physics.OverlapSphereNonAlloc(transform.position, rangeCheckOpponent, colliderOpponent,
             GetCharacterLayerMask());
-        if (numberCast <= 1) return false;
+        if (numberCast <= 1)
+        {
+            UpdateTargetDetect(null);
+            return false;
+        }
         foreach (var colliderItem in colliderOpponent)
         {
             if (colliderItem.transform != transform)
             {
-                target = colliderItem.transform;
+                
+                UpdateTargetDetect(colliderItem.transform);
                 return true;
             }
         }
@@ -122,6 +129,10 @@ public class Character : MonoBehaviour
         return false;
     }
 
+    protected virtual void UpdateTargetDetect(Transform newTarget)
+    {
+        target = newTarget;
+    }
     public void LookAtTarget()
     {
         if (target != null)
@@ -130,6 +141,10 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void SetKillerName(string name)
+    {
+        KillerName = name;
+    }
     #region Get Properties
     public float GetSpeed()
     {

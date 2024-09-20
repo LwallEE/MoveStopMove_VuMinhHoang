@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BotMoveState : State
 {
+    [SerializeField] private float minimumDistance;
+    [SerializeField] private int interations;
     private BotController bot;
     
     public bool IsGoToDestination { get; private set; }
@@ -25,4 +27,6 @@ public class BotMoveState : State
         base.PhysicsUpdate();
         IsGoToDestination = bot.IsReachDestination();
     }
+
+   
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ReuseSystem.ObjectPooling
@@ -17,8 +18,9 @@ namespace ReuseSystem.ObjectPooling
         [SerializeField] private List<GameObjectPool> listGameObjectToPreload;
         private Dictionary<GameObject, List<GameObject>> _poolObj = new Dictionary<GameObject, List<GameObject>>();
 
-        private void Start()
+        protected override void Awake()
         {
+            base.Awake();
             PreLoadObject();
         }
 
@@ -27,6 +29,7 @@ namespace ReuseSystem.ObjectPooling
             if (listGameObjectToPreload == null) return;
             foreach (var obj in listGameObjectToPreload)
             {
+                if (_poolObj.ContainsKey(obj.objectToSpawn)) continue;
                 _poolObj.Add(obj.objectToSpawn, new List<GameObject>());
                 for (int i = 0; i < obj.numberToSpawn; i++)
                 {
@@ -84,14 +87,49 @@ namespace ReuseSystem.ObjectPooling
             _poolObj[objectPrefab].Clear();
             _poolObj.Remove(objectPrefab);
         }
-
+        
+        //release all except preload, preload will be deactive
         public void ReleaseAll()
         {
-            _poolObj.Clear();
-            for (int i = 0; i < transform.childCount; i++)
+            try
             {
-                Destroy(transform.GetChild(i).gameObject);
+                var keys = _poolObj.Keys.ToList();
+                foreach (var key in keys)
+                {
+                    if (listGameObjectToPreload.Any(x => x.objectToSpawn == key))
+                    {
+                        DeActiveAll(key);
+                        continue;
+                    };
+                    var objectInstance = _poolObj[key];
+
+                    foreach (var instance in objectInstance)
+                    {
+                        Destroy(instance);
+                    }
+
+                    objectInstance.Clear();
+                    _poolObj.Remove(key);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(e);
+            }
+            
+            
+        }
+        
+        private void DeActiveAll(GameObject key)
+        {
+            var objectInstance = _poolObj[key];
+
+            foreach (var instance in objectInstance)
+            {
+                instance.SetActive(false);
             }
         }
     }
+  
 }
