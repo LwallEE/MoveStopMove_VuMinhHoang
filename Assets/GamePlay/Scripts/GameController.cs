@@ -113,6 +113,10 @@ public class GameController : Singleton<GameController>
         }
     }
 
+    public void RevivePlayer()
+    {
+        mainPlayer.Revive();
+    }
     public bool IsInState(GameState state)
     {
         return currentGameState == state;

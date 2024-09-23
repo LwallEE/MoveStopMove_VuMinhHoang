@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ReuseSystem;
 using UnityEngine;
 
 public class PlayerController : Character
@@ -57,7 +58,7 @@ public class PlayerController : Character
         base.OnDeath();
         rigibody.isKinematic = true;
         stateMachine.ChangeState(playerDeadState);
-        GameController.Instance.ChangeGameState(GameState.GameLose);
+        UIManager.Instance.OpenUI<PopupRevive>();
     }
 
     public override void ChangeFromStateToState(State fromState)
@@ -197,5 +198,12 @@ public class PlayerController : Character
         if (data != null && data is WeaponEquipmentData) weapon = (data as WeaponEquipmentData).weaponPrefab;
         
         CharacterSkin.ChangeSkin(type, texture, indexInPlayer, weapon);
+    }
+
+    public void Revive()
+    {
+        stateMachine.ChangeState(playerIdleState);
+        colliderr.enabled = true;
+        rigibody.isKinematic = false;
     }
 }

@@ -26,7 +26,7 @@ public class PopupRevive : UICanvas
 
    private void FixedUpdate()
    {
-      rotateGameObject.Rotate(0,speedRotate*Time.deltaTime,0);
+      rotateGameObject.Rotate(0,0,speedRotate*Time.deltaTime);
       if (isCounter)
       {
          if (counterTime > 0)
@@ -49,6 +49,11 @@ public class PopupRevive : UICanvas
 
    public void OnReviveClick()
    {
-      
+      if (PlayerSavingData.PlayerCurrentCoin >= Constants.COST_TO_REVIVE)
+      {
+         PlayerSavingData.PlayerCurrentCoin -= Constants.COST_TO_REVIVE;
+         UIManager.Instance.CloseUI<PopupRevive>();
+         GameController.Instance.RevivePlayer();
+      }
    }
 }

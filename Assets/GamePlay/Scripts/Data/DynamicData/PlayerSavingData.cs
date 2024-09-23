@@ -8,7 +8,7 @@ public static class PlayerSavingData
    private const string PLAYER_CURRENT_COIN_KEY = "PLAYER_CURRENT_COIN";
    private const string PLAYER_BEST_SCORE_KEY = "PLAYER_BEST_SCORE";
    private const string PLAYER_CURRENT_MAP_INDEX_KEY = "PLAYER_CURRENT_MAP_INDEX";
-   private const int PLAYER_MAX_MAP_INDEX = 0;
+   private const int PLAYER_MAX_MAP_INDEX = 1;
    public static int PlayerCurrentCoin
    {
       get => PlayerPrefs.GetInt(PLAYER_CURRENT_COIN_KEY, 0);
@@ -20,8 +20,11 @@ public static class PlayerSavingData
       get => PlayerPrefs.GetInt(PLAYER_CURRENT_MAP_INDEX_KEY, 0);
       set
       {
-         if(value <= PLAYER_MAX_MAP_INDEX)
+         if (value <= PLAYER_MAX_MAP_INDEX)
+         {
             PlayerPrefs.SetInt(PLAYER_CURRENT_MAP_INDEX_KEY, value);
+            PlayerBestScore = 0;
+         }
       } 
    }
 

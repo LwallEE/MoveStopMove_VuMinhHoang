@@ -13,7 +13,7 @@ public class GameMenuCanvas : UICanvas
     {
         base.Setup();
         zoneTxt.text = "ZONE: "+ (PlayerSavingData.PlayerCurrentMapIndex + 1);
-        bestTxt.text = "BEST: #" + (PlayerSavingData.PlayerBestScore);
+        bestTxt.text = "BEST: #" + (PlayerSavingData.PlayerBestScore == 0 ? "__" : PlayerSavingData.PlayerBestScore);
     }
 
     public void SkinShopClick()
