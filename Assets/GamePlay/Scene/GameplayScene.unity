@@ -302,19 +302,9 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -44.7135
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5199695710214850803, guid: 4023ce8adb5902149bb24f4dd84a4881, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4023ce8adb5902149bb24f4dd84a4881, type: 3}
---- !u!114 &228595249 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4924155439542185994, guid: 4023ce8adb5902149bb24f4dd84a4881, type: 3}
-  m_PrefabInstance: {fileID: 228595248}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa12c4e76c5614e42bf6219856c84518, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &228595250 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4924155439542185998, guid: 4023ce8adb5902149bb24f4dd84a4881, type: 3}
@@ -2445,10 +2435,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 643646081597904107, guid: 86abdf3a722160e4e8619eb042066eb4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 228595249}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86abdf3a722160e4e8619eb042066eb4, type: 3}
 --- !u!1001 &2350520126653149178

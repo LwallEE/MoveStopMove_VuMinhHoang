@@ -14,6 +14,12 @@ public class SkinShopCanvas : UICanvas
     [SerializeField] private CoinBar coinBar;
     private SlotItemLayout currentChooseSlotItem;
 
+    public override void Setup()
+    {
+        base.Setup();
+        coinBar.UpdateCoin(false);
+    }
+
     private void Start()
     {
         foreach (var item in itemScrollViews)
@@ -50,7 +56,7 @@ public class SkinShopCanvas : UICanvas
         {
             view.RefreshAllItem();
         }
-        coinBar.UpdateCoin();
+        coinBar.UpdateCoin(true);
     }
     //function to interact with item: buy, equip, unequipped
     public void InteractItem(SlotItemLayout itemSlot, ItemStatusEnum statusInteract)

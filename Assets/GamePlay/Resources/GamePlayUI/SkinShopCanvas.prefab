@@ -1774,7 +1774,7 @@ MonoBehaviour:
   - {fileID: 8756984917339983539}
   - {fileID: 4170689721302040653}
   btnInteract: {fileID: 1829264086}
-  coinBar: {fileID: 5199695710214850803}
+  coinBar: {fileID: 3453595734568867543}
 --- !u!1001 &15054983286418926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2493,15 +2493,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52bf88b43d565254db684a71d1bc481b, type: 3}
---- !u!114 &7944144411935698094 stripped
+--- !u!114 &3453595734568867543 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3056070617289177707, guid: 52bf88b43d565254db684a71d1bc481b, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7763007623193640978, guid: 52bf88b43d565254db684a71d1bc481b, type: 3}
   m_PrefabInstance: {fileID: 4924155439090980549}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: a9dc50341775e474099f8578fd095ab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &7944144412978986552 stripped
@@ -2509,24 +2509,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3056070616245823741, guid: 52bf88b43d565254db684a71d1bc481b, type: 3}
   m_PrefabInstance: {fileID: 4924155439090980549}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7944144412978986553 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3056070616245823740, guid: 52bf88b43d565254db684a71d1bc481b, type: 3}
-  m_PrefabInstance: {fileID: 4924155439090980549}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5199695710214850803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7944144412978986553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9dc50341775e474099f8578fd095ab0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  goldTxt: {fileID: 7944144411935698094}
 --- !u!1001 &4924155439335852594
 PrefabInstance:
   m_ObjectHideFlags: 0

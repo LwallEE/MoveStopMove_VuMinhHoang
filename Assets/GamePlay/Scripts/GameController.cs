@@ -94,8 +94,10 @@ public class GameController : Singleton<GameController>
             PlayerSavingData.PlayerBestScore = total - deadBot;
             UIManager.Instance.GetUI<PopupEndGameCanvas>().ShowPopupFailed(deadBot, mainPlayer.KillerName,
                  total- deadBot);
-
+            UIManager.Instance.GetUI<GameMenuCanvas>().ShowCoinUpdateEffect();
+            
             PlayerSavingData.PlayerBestScore = Mathf.Max(PlayerSavingData.PlayerBestScore, total - deadBot);
+            PlayerSavingData.PlayerCurrentCoin += deadBot;
             UIManager.Instance.OpenUI<PopupEndGameCanvas>();
         }
         if (currentGameState == GameState.GameWin)
@@ -106,9 +108,11 @@ public class GameController : Singleton<GameController>
             int total = LevelManager.Instance.GetCurrentMap().GetTotalNumberOfPlayer();
             PlayerSavingData.PlayerBestScore = total - deadBot;
             UIManager.Instance.GetUI<PopupEndGameCanvas>().ShowPopupWin(deadBot);
-
+            UIManager.Instance.GetUI<GameMenuCanvas>().ShowCoinUpdateEffect();
+            
             PlayerSavingData.PlayerBestScore = 1;
             PlayerSavingData.PlayerCurrentMapIndex += 1;
+            PlayerSavingData.PlayerCurrentCoin += deadBot;
             UIManager.Instance.OpenUI<PopupEndGameCanvas>();
         }
     }

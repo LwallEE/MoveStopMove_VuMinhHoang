@@ -172,10 +172,11 @@ public class PlayerController : Character
 
     public void ReturnToGamePlay()
     {
+        rangeBotIndicator.SetActive(true);
         rigibody.isKinematic = false;
         colliderr.enabled = true;
         stateMachine.ChangeState(playerIdleState);
-        rangeBotIndicator.SetActive(true);
+        
         if (indicator != null)
         {
             indicator.gameObject.SetActive(true);

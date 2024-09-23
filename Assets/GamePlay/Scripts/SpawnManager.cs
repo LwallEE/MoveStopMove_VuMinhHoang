@@ -87,10 +87,16 @@ public class SpawnManager : Singleton<SpawnManager>
         UIManager.Instance.GetUI<GamePlayCanvas>().UpdateAliveText(currentMap.GetTotalNumberBot());
         currentNumberBotInMap = 0;
         deadCounter = 0;
+        StartCoroutine(SpawnAllBots());
+    }
+
+    IEnumerator SpawnAllBots()
+    {
+        WaitForSeconds wait = new WaitForSeconds(0.05f);
         for (int i = 0; i < currentMap.GetMaxNumberOfBotAtSameTime(); i++)
         {
             SpawnBot();
+            yield return wait;
         }
     }
-    
 }

@@ -24,11 +24,17 @@ public class WeaponShopCanvas : UICanvas
     [SerializeField] private GameObject buySectionObj;
     [SerializeField] private Color normalButtonColor;
     [SerializeField] private Color buyButtonColor;
-    
+    [SerializeField] private CoinBar coinBar;
     
     private List<WeaponEquipmentData> data;
     private ItemStatusEnum weaponInteractStatus;
     private int currentIndexWeapon;
+    public override void Setup()
+    {
+        base.Setup();
+        coinBar.UpdateCoin(false);
+    }
+
     private void Start()
     {
         LoadData();
@@ -58,6 +64,7 @@ public class WeaponShopCanvas : UICanvas
             {
                 PlayerSavingData.PlayerCurrentCoin -= weaponData.cost;
                 equipmentSavingData.UpdateEquipmentStatus(weaponData.id,true);
+                coinBar.UpdateCoin(true);
             }
         }
         else if (weaponInteractStatus == ItemStatusEnum.Equip)

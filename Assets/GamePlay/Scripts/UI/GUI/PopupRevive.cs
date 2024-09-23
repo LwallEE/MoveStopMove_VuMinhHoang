@@ -47,6 +47,12 @@ public class PopupRevive : UICanvas
       GameController.Instance.ChangeGameState(GameState.GameLose);
    }
 
+   public void OnExitClick()
+   {
+      GameController.Instance.ChangeGameState(GameState.GameLose);
+
+   }
+
    public void OnReviveClick()
    {
       if (PlayerSavingData.PlayerCurrentCoin >= Constants.COST_TO_REVIVE)
