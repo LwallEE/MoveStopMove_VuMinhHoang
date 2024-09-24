@@ -17,3 +17,6 @@ MonoBehaviour:
   imageSprite: {fileID: 21300000, guid: 345712e8957399f4180a6d42b0e2173e, type: 3}
   equipmentType: 1
   equipmentInPlayerIndex: 4
+  statsAttribute:
+    type: 1
+    amount: 0.5

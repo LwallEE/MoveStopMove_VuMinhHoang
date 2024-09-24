@@ -17,4 +17,8 @@ MonoBehaviour:
   imageSprite: {fileID: 21300000, guid: 1f451d70968f654468a0186f904fc156, type: 3}
   equipmentType: 0
   equipmentInPlayerIndex: 0
+  statsAttribute:
+    type: 2
+    amount: 0.1
+    isPercentage: 1
   pantTexture: {fileID: 2800000, guid: e119361a0d7fd344eb37842037719c31, type: 3}

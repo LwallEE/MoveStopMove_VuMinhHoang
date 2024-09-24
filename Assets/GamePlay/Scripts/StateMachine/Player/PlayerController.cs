@@ -15,6 +15,8 @@ public class PlayerController : Character
     [SerializeField] private PlayerAttackState playerAttackState;
     [SerializeField] private PlayerDeadState playerDeadState;
     [SerializeField] private string danceAnim;
+
+    [SerializeField] private PlayerEquipment equipment;
     protected override void Awake()
     {
         base.Awake();
@@ -42,9 +44,9 @@ public class PlayerController : Character
         var playerData = PlayerSavingData.GetPlayerEquipmentData();
         var equipmentManager = GameAssets.Instance.EquipmentManager;
         EquipSkin(equipmentManager.GetEquipmentDataById(playerData.GetWeaponEquippedId()),EquipmentType.Weapon);
+        EquipSkin(equipmentManager.GetEquipmentDataById(playerData.GetFullSkinEquippedId()),EquipmentType.FullSkin);
         if (!string.IsNullOrEmpty(playerData.GetFullSkinEquippedId()))
         {
-            EquipSkin(equipmentManager.GetEquipmentDataById(playerData.GetFullSkinEquippedId()),EquipmentType.FullSkin);
             return;
         }
         CharacterSkin.ResetSkinToNormal();
@@ -101,6 +103,16 @@ public class PlayerController : Character
         }
     }
 
+    public override float GetRange()
+    {
+        return base.GetRange() + equipment.GetAttributesBuff(StatsType.Range);
+    }
+
+    public override float GetSpeed()
+    {
+        return base.GetSpeed() *(1+equipment.GetAttributesBuff(StatsType.Speed)) ;
+    }
+
     protected override void UpdateTargetDetect(Transform newTarget)
     {
         if (target != newTarget)
@@ -114,6 +126,7 @@ public class PlayerController : Character
     public override void LevelUp()
     {
         base.LevelUp();
+        UpdateRangeBot();
         CameraController.Instance.UpdateOffset(currentLevel);
     }
 
@@ -170,9 +183,14 @@ public class PlayerController : Character
         CharacterSkin.gameObject.SetActive(false);
     }
 
+    private void UpdateRangeBot()
+    {
+        rangeBotIndicator.transform.localScale = Vector3.one * GetRange() / CurrentScale;
+    }
     public void ReturnToGamePlay()
     {
         rangeBotIndicator.SetActive(true);
+        UpdateRangeBot();
         rigibody.isKinematic = false;
         colliderr.enabled = true;
         stateMachine.ChangeState(playerIdleState);
@@ -186,6 +204,7 @@ public class PlayerController : Character
 
     public void EquipSkin(EquipmentData data,EquipmentType type)
     {
+        equipment.EquipEquipment(type, data);
         if (type == EquipmentType.FullSkin && data is FullSkinEquipmentData) //equip full skin
         {
             CharacterSkin.EquipFullSkin(data as FullSkinEquipmentData);

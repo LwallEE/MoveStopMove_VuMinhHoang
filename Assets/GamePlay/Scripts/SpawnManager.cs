@@ -68,7 +68,7 @@ public class SpawnManager : Singleton<SpawnManager>
         {
             SpawnBot();
         }
-        Debug.Log($"Number of bot remain {currentMap.GetTotalNumberBot()-deadCounter}".AddColor(Color.yellow));
+        //Debug.Log($"Number of bot remain {currentMap.GetTotalNumberBot()-deadCounter}".AddColor(Color.yellow));
         UIManager.Instance.GetUI<GamePlayCanvas>().UpdateAliveText(currentMap.GetTotalNumberOfPlayer() - deadCounter);
         if (deadCounter >= currentMap.GetTotalNumberBot())
         {

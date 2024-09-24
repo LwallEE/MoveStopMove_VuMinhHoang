@@ -17,6 +17,10 @@ MonoBehaviour:
   imageSprite: {fileID: 21300000, guid: 591bf6bd34c3a3c4e9143ba55a6c7d7b, type: 3}
   equipmentType: 3
   equipmentInPlayerIndex: 0
+  statsAttribute:
+    type: 2
+    amount: 0.2
+    isPercentage: 1
   bodyColor: {r: 1, g: 0.043137256, b: 0, a: 1}
   bodyTexture: {fileID: 0}
   skinParts:

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using ReuseSystem;
+using TMPro;
 using UnityEngine;
 
 public class SkinShopCanvas : UICanvas
@@ -12,6 +13,7 @@ public class SkinShopCanvas : UICanvas
 
     [SerializeField] private ButtonInteractShop btnInteract;
     [SerializeField] private CoinBar coinBar;
+    [SerializeField] private TextMeshProUGUI attributeText;
     private SlotItemLayout currentChooseSlotItem;
 
     public override void Setup()
@@ -45,6 +47,11 @@ public class SkinShopCanvas : UICanvas
     public void SetCurrentSlotItemChoose(SlotItemLayout item)
     {
         currentChooseSlotItem = item;
+        if (item.currentData.statsAttribute.type != StatsType.None)
+        {
+            var stat = item.currentData.statsAttribute;
+            attributeText.text = $"+ {stat.amount*(stat.isPercentage ? 100 : 1)}{(stat.isPercentage ? "%" : "")} {stat.type.ToString()}";
+        }
         btnInteract.UpdateButtonAccordingToItem(currentChooseSlotItem);
         GameController.Instance.GetPlayer().CharacterSkin.ResetSkinToNormal();
         GameController.Instance.GetPlayer().EquipSkin(item.currentData, item.currentData.equipmentType);

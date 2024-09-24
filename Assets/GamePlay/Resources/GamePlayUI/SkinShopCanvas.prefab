@@ -1775,6 +1775,7 @@ MonoBehaviour:
   - {fileID: 4170689721302040653}
   btnInteract: {fileID: 1829264086}
   coinBar: {fileID: 3453595734568867543}
+  attributeText: {fileID: 4924155437921444702}
 --- !u!1001 &15054983286418926
 PrefabInstance:
   m_ObjectHideFlags: 0

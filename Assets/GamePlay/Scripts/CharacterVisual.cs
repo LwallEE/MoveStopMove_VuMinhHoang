@@ -15,6 +15,8 @@ public class CharacterVisual : MonoBehaviour
     [SerializeField] private Transform tailContainer;
     [SerializeField] private SkinnedMeshRenderer bodySkinnedMeshRenderer;
     [SerializeField] private Color normalPlayerColor;
+
+   
     
     //Color random for bot
     [SerializeField] private List<Color> colorToRandom;
@@ -24,7 +26,7 @@ public class CharacterVisual : MonoBehaviour
     {
         RandomEquipment();
     }
-
+    
     public Color GetColor()
     {
         return bodySkinnedMeshRenderer.material.color;
@@ -34,6 +36,7 @@ public class CharacterVisual : MonoBehaviour
         
     }
 
+  
     public void ResetSkinToNormal()
     {
         hairContainer.DisableAllChild();

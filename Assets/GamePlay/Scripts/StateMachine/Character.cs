@@ -109,7 +109,7 @@ public class Character : MonoBehaviour
 
     public bool CheckOpponentInRange()
     {
-        var numberCast = Physics.OverlapSphereNonAlloc(transform.position, rangeCheckOpponent, colliderOpponent,
+        var numberCast = Physics.OverlapSphereNonAlloc(transform.position, GetRange(), colliderOpponent,
             GetCharacterLayerMask());
         if (numberCast <= 1)
         {
@@ -146,7 +146,7 @@ public class Character : MonoBehaviour
         KillerName = name;
     }
     #region Get Properties
-    public float GetSpeed()
+    public virtual float GetSpeed()
     {
         return Constants.CHARACTER_BASE_SPEED;
     }
@@ -164,7 +164,7 @@ public class Character : MonoBehaviour
         return LazyPool.Instance.GetObj<Weapon>(CharacterSkin.WeaponPrefab.gameObject);
     }
 
-    public float GetRange()
+    public virtual float GetRange()
     {
         return rangeCheckOpponent;
     }
@@ -197,6 +197,6 @@ public class Character : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, rangeCheckOpponent);
+        Gizmos.DrawWireSphere(transform.position, GetRange());
     }
 }
