@@ -14,7 +14,12 @@ public class SpawnManager : Singleton<SpawnManager>
     private Map currentMap;
     private int currentNumberBotInMap;
     private int deadCounter;
-    
+    private List<BotController> listBots = new List<BotController>();
+
+    public void OnInit()
+    {
+        
+    }
 
     private void SpawnBot()
     {
@@ -38,9 +43,10 @@ public class SpawnManager : Singleton<SpawnManager>
         
         var pos = currentMap.GetRandomPosInMap();
         currentNumberBotInMap++;
-        var bot = LazyPool.Instance.GetObj<Character>(GameAssets.Instance.botPrefab);
-        bot.transform.position = pos;
+        var bot = SimplePool.Instance.Spawn<BotController>(GameAssets.Instance.botPrefab,pos, Quaternion.identity);
         bot.OnInit();
+        listBots.Add(bot);
+        bot.OnDeathAction = CallbackOnBotDie; 
     }
     private bool TrySpawnBot()
     {
@@ -50,9 +56,10 @@ public class SpawnManager : Singleton<SpawnManager>
             if (!Physics.CheckSphere(pos, radiusCheck, obstacleLayer))
             {
                 currentNumberBotInMap++;
-                var bot = LazyPool.Instance.GetObj<Character>(GameAssets.Instance.botPrefab);
-                bot.transform.position = pos;
+                var bot = SimplePool.Instance.Spawn<BotController>(GameAssets.Instance.botPrefab,pos, Quaternion.identity);
                 bot.OnInit();
+                listBots.Add(bot);
+                bot.OnDeathAction = CallbackOnBotDie; 
                 return true;
             }
         }
@@ -61,7 +68,7 @@ public class SpawnManager : Singleton<SpawnManager>
     }
 
     //Spawn another bot if one bot die
-    public void CallbackOnBotDie()
+    public void CallbackOnBotDie(BotController bot)
     {
         deadCounter++;
         if (currentNumberBotInMap < currentMap.GetTotalNumberBot() && GameController.Instance.IsInState(GameState.GamePlay))
@@ -72,8 +79,10 @@ public class SpawnManager : Singleton<SpawnManager>
         UIManager.Instance.GetUI<GamePlayCanvas>().UpdateAliveText(currentMap.GetTotalNumberOfPlayer() - deadCounter);
         if (deadCounter >= currentMap.GetTotalNumberBot())
         {
-            GameController.Instance.ChangeGameState(GameState.GameWin);
+            GameController.Instance.OnWin();
         }
+
+        listBots.Remove(bot);
     }
 
     public int GetNumberDeadBot()
@@ -96,7 +105,7 @@ public class SpawnManager : Singleton<SpawnManager>
         for (int i = 0; i < currentMap.GetMaxNumberOfBotAtSameTime(); i++)
         {
             SpawnBot();
-            yield return wait;
+            yield return null;
         }
     }
 }

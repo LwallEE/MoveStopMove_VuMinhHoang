@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using ReuseSystem.ObjectPooling;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : GameUnit
 {
     public string KillerName { get; private set; }
     public string Name { get; protected set; }
-    public Animator Anim { get; private set; }
-    public CharacterVisual CharacterSkin { get; private set; }
+    [field:SerializeField] public Animator Anim { get; private set; }
+    [field:SerializeField] public CharacterVisual CharacterSkin { get; private set; }
     protected Collider colliderr;
     protected StateMachine stateMachine;
     
@@ -27,8 +27,6 @@ public class Character : MonoBehaviour
     #region UnityEvent
     protected virtual void Awake()
     {
-        Anim = GetComponentInChildren<Animator>();
-        CharacterSkin = GetComponentInChildren<CharacterVisual>();
         colliderr = GetComponent<Collider>();
         stateMachine = new StateMachine();
     }
@@ -61,7 +59,7 @@ public class Character : MonoBehaviour
         colliderr.enabled = true;
         rangeCheckOpponent = Constants.CHARACTER_BASE_RANGE_ATTACK;
         CurrentScale = 1f;
-        indicator = LazyPool.Instance.GetObj<BotIndicator>(GameAssets.Instance.characterIndicator);
+        indicator = SimplePool.Instance.Spawn<BotIndicator>(GameAssets.Instance.characterIndicator);
         indicator.transform.SetParent(UICanvasWorld.Instance.transform);
     }
 
@@ -70,7 +68,7 @@ public class Character : MonoBehaviour
         //Debug.Log(gameObject.name + " death");
         colliderr.enabled = false;
         if(indicator != null)
-            LazyPool.Instance.AddObjectToPool(indicator.gameObject);
+            SimplePool.Instance.Despawn(indicator);
     }
     public virtual void PlayAnimation(string animationName, bool value)
     {
@@ -92,7 +90,7 @@ public class Character : MonoBehaviour
         CurrentScale = 
             Mathf.Clamp(1 + Constants.ALPHA_CHANGE_PER_LEVEL_UP * currentLevel,
                 1, Constants.CHARACTER_MAX_SCALE_UP);
-        transform.localScale = CurrentScale * Vector3.one;
+        Tf.localScale = CurrentScale * Vector3.one;
     }
 
     public virtual void ChangeFromStateToState(State fromState)
@@ -109,7 +107,7 @@ public class Character : MonoBehaviour
 
     public bool CheckOpponentInRange()
     {
-        var numberCast = Physics.OverlapSphereNonAlloc(transform.position, GetRange(), colliderOpponent,
+        var numberCast = Physics.OverlapSphereNonAlloc(Tf.position, GetRange(), colliderOpponent,
             GetCharacterLayerMask());
         if (numberCast <= 1)
         {
@@ -118,7 +116,7 @@ public class Character : MonoBehaviour
         }
         foreach (var colliderItem in colliderOpponent)
         {
-            if (colliderItem.transform != transform)
+            if (colliderItem.transform != Tf)
             {
                 
                 UpdateTargetDetect(colliderItem.transform);
@@ -137,7 +135,7 @@ public class Character : MonoBehaviour
     {
         if (target != null)
         {
-            transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
+            Tf.LookAt(new Vector3(target.position.x, Tf.position.y, target.position.z));
         }
     }
 
@@ -161,7 +159,7 @@ public class Character : MonoBehaviour
 
     public Weapon GetWeapon()
     {
-        return LazyPool.Instance.GetObj<Weapon>(CharacterSkin.WeaponPrefab.gameObject);
+        return SimplePool.Instance.Spawn<Weapon>(CharacterSkin.WeaponPrefab);
     }
 
     public virtual float GetRange()

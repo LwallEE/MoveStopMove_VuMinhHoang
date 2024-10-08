@@ -44,12 +44,12 @@ public class PopupRevive : UICanvas
 
    private void ShowPopUpEndGame()
    {
-      GameController.Instance.ChangeGameState(GameState.GameLose);
+      GameController.Instance.OnLose();
    }
 
    public void OnExitClick()
    {
-      GameController.Instance.ChangeGameState(GameState.GameLose);
+      GameController.Instance.OnLose();
 
    }
 

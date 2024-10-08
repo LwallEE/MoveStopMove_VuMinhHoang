@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BotIndicator : MonoBehaviour
+public class BotIndicator : GameUnit
 {
     [SerializeField] private float offset;
     [SerializeField] private Vector3 offsetY;
@@ -71,7 +71,6 @@ public class BotIndicator : MonoBehaviour
         currentLevelTxt.text = currentLevel.ToString();
         nameTxt.color = color;
         indicatorImg.color = color;
-        transform.localScale = Vector3.one;
     }
 
     public void UpdateLevel(int level)

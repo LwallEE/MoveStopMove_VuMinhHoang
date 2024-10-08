@@ -8,6 +8,8 @@ public static class PlayerSavingData
    private const string PLAYER_CURRENT_COIN_KEY = "PLAYER_CURRENT_COIN";
    private const string PLAYER_BEST_SCORE_KEY = "PLAYER_BEST_SCORE";
    private const string PLAYER_CURRENT_MAP_INDEX_KEY = "PLAYER_CURRENT_MAP_INDEX";
+   private const string PLAYER_SOUND_STATUS_KEY = "PLAYER_SOUND_STATUS_KEY";
+   private const string PLAYER_VIBRATION_STATUS_KEY = "PLAYER_VIBRATION_STATUS_KEY";
    private const int PLAYER_MAX_MAP_INDEX = 1;
    public static int PlayerCurrentCoin
    {
@@ -42,11 +44,24 @@ public static class PlayerSavingData
          PlayerPrefs.SetInt(PLAYER_BEST_SCORE_KEY, Mathf.Min(value,PlayerBestScore));
       }
    }
+
+   public static bool PlayerSoundStatus
+   {
+      get => PlayerPrefs.GetInt(PLAYER_SOUND_STATUS_KEY, 0) == 1;
+      set => PlayerPrefs.SetInt(PLAYER_SOUND_STATUS_KEY, value ? 1 : 0);
+   }
+
+   public static bool PlayerVibrationStatus
+   {
+      get => PlayerPrefs.GetInt(PLAYER_VIBRATION_STATUS_KEY, 0) == 1;
+      set => PlayerPrefs.SetInt(PLAYER_VIBRATION_STATUS_KEY, value ? 1 : 0);
+   }
    private static PlayerEquipmentData playerEquipmentData;
 
    public static PlayerEquipmentData GetPlayerEquipmentData()
    {
       if (playerEquipmentData != null) return playerEquipmentData;
+      
       Debug.Log("Get player data from disk".AddColor(Color.blue));
       playerEquipmentData = SaveLoadManager.Instance.Get<PlayerEquipmentData>();
       return playerEquipmentData;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using ReuseSystem.ObjectPooling;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : GameUnit
 {
    [SerializeField] protected float speed;
    [SerializeField] protected bool isRotate;
@@ -63,20 +63,20 @@ public class Weapon : MonoBehaviour
    {
       if (Vector3.Distance(previousPos, transform.position) > rangeToDisappear)
       {
-         LazyPool.Instance.AddObjectToPool(gameObject);
+         SimplePool.Instance.Despawn(this);
       }
    }
 
    protected virtual void DestroyWeapon()
    {
-      LazyPool.Instance.AddObjectToPool(gameObject);
+      SimplePool.Instance.Despawn(this);
    }
 
    protected virtual void OnTriggerEnter(Collider other)
    {
       if (other.CompareTag(Constants.CHARACTER_TAG) && other.transform != sender.transform)
       {
-         var character = other.GetComponent<Character>();
+         var character = Cache.GenCharacters(other);
          character.SetKillerName(sender.Name);
          character.OnDeath();
          sender.LevelUp();

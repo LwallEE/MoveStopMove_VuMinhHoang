@@ -31,7 +31,7 @@ public class CoinCollectEffect : MonoBehaviour
         WaitForSeconds waitEachInstantiate = new WaitForSeconds(0.1f);
         for (int i = 0; i < numberOfCoinInstantiate; i++)
         {
-            var coinCollect = LazyPool.Instance.GetObj<CoinCollect>(prefab.gameObject);
+            var coinCollect = SimplePool.Instance.Spawn<CoinCollect>(prefab,Vector3.zero, Quaternion.identity);
             coinCollect.Init(GetRandomPosition(rect.position,offset),rect, GetRandomPosition(coinBarPosition.position, offsetBar),timeWait);
             yield return waitEachInstantiate;
         }

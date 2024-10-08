@@ -92,6 +92,6 @@ public class SkinShopCanvas : UICanvas
 
     public void ExitSkinShop()
     {
-        GameController.Instance.ChangeGameState(GameState.GameHome);
+        GameController.Instance.OnBackHome();
     }
 }

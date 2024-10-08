@@ -73,7 +73,7 @@ public class WeaponShopCanvas : UICanvas
         }
         else if (weaponInteractStatus == ItemStatusEnum.UnEquip)
         {
-            GameController.Instance.ChangeGameState(GameState.GameHome);
+            GameController.Instance.OnBackHome();
         }
         UpdateButtonAccordingToItemStatus();
     }
@@ -140,6 +140,6 @@ public class WeaponShopCanvas : UICanvas
 
     public void ExitWeaponShop()
     {
-        GameController.Instance.ChangeGameState(GameState.GameHome);
+        GameController.Instance.OnBackHome();
     }
 }

@@ -25,14 +25,15 @@ public class GameController : Singleton<GameController>
         base.Awake();
         Application.targetFrameRate = 60;
         mainPlayer = FindObjectOfType<PlayerController>();
-        //SaveLoadManager.ClearGameData();
+        SaveLoadManager.ClearGameData();
         PlayerSavingData.PlayerCurrentCoin = 10000;
     }
 
     private void Start()
     {
-        LoadPlayer();
-        ChangeGameState(GameState.GameHome);
+        /*LoadPlayer();
+        ChangeGameState(GameState.GameHome);*/
+        OnInit();
     }
 
     private void LoadPlayer()
@@ -45,9 +46,9 @@ public class GameController : Singleton<GameController>
     public void ChangeGameState(GameState state)
     {
         currentGameState = state;
+        /*
         if (currentGameState == GameState.GameHome)
         {
-            LazyPool.Instance.ReleaseAll();
             UIManager.Instance.CloseAll();
             UIManager.Instance.OpenUI<GameMenuCanvas>();
             
@@ -113,8 +114,9 @@ public class GameController : Singleton<GameController>
             PlayerSavingData.PlayerBestScore = 1;
             PlayerSavingData.PlayerCurrentMapIndex += 1;
             PlayerSavingData.PlayerCurrentCoin += deadBot;
+            mainPlayer.WinGame();
             UIManager.Instance.OpenUI<PopupEndGameCanvas>();
-        }
+        }*/
     }
 
     public void RevivePlayer()
@@ -135,4 +137,91 @@ public class GameController : Singleton<GameController>
     {
         return mainPlayer;
     }
+
+    public void OnInit()
+    {
+       SpawnManager.Instance.OnInit();
+       LoadPlayer();
+       OnBackHome();
+    }
+
+    public void OnBackHome()
+    {
+        ChangeGameState(GameState.GameHome);
+        OnDespawn();
+        UIManager.Instance.CloseAll();
+        UIManager.Instance.OpenUI<GameMenuCanvas>();
+           
+        LevelManager.Instance.LoadCurrentMap();
+        mainPlayer.ReturnToHome();
+        CameraController.Instance.ChangeCameraMode(CameraMode.HomeMode);
+    }
+
+    public void OnWeaponShop()
+    {
+        ChangeGameState(GameState.WeaponShop);
+        UIManager.Instance.CloseAll();
+        UIManager.Instance.OpenUI<WeaponShopCanvas>();
+            
+        mainPlayer.ReturnToWeaponShop();
+    }
+
+    public void OnSkinShop()
+    {
+        ChangeGameState(GameState.SkinShop);
+        UIManager.Instance.CloseAll();
+        UIManager.Instance.OpenUI<SkinShopCanvas>();
+            
+        CameraController.Instance.ChangeCameraMode(CameraMode.SkinShopMode);
+        mainPlayer.ReturnSkinShop();
+    }
+    public void OnPlay()
+    {
+        ChangeGameState(GameState.GamePlay);
+        UIManager.Instance.CloseAll();
+        UIManager.Instance.OpenUI<GamePlayCanvas>();
+            
+        mainPlayer.ReturnToGamePlay();
+        CameraController.Instance.ChangeCameraMode(CameraMode.GameplayMode);
+        SpawnManager.Instance.LoadMap(LevelManager.Instance.GetCurrentMap());
+    }
+
+    public void OnWin()
+    {
+        ChangeGameState(GameState.GameWin);
+        UIManager.Instance.CloseAll();
+        int deadBot = SpawnManager.Instance.GetNumberDeadBot();
+        int total = LevelManager.Instance.GetCurrentMap().GetTotalNumberOfPlayer();
+        PlayerSavingData.PlayerBestScore = total - deadBot;
+        UIManager.Instance.GetUI<PopupEndGameCanvas>().ShowPopupWin(deadBot);
+        UIManager.Instance.GetUI<GameMenuCanvas>().ShowCoinUpdateEffect();
+            
+        PlayerSavingData.PlayerBestScore = 1;
+        PlayerSavingData.PlayerCurrentMapIndex += 1;
+        PlayerSavingData.PlayerCurrentCoin += deadBot;
+        mainPlayer.WinGame();
+        UIManager.Instance.OpenUI<PopupEndGameCanvas>();
+    }
+
+    public void OnLose()
+    {
+        ChangeGameState(GameState.GameLose);
+        UIManager.Instance.CloseAll();
+        int deadBot = SpawnManager.Instance.GetNumberDeadBot();
+        int total = LevelManager.Instance.GetCurrentMap().GetTotalNumberOfPlayer();
+        PlayerSavingData.PlayerBestScore = total - deadBot;
+        UIManager.Instance.GetUI<PopupEndGameCanvas>().ShowPopupFailed(deadBot, mainPlayer.KillerName,
+            total- deadBot);
+        UIManager.Instance.GetUI<GameMenuCanvas>().ShowCoinUpdateEffect();
+            
+        PlayerSavingData.PlayerBestScore = Mathf.Max(PlayerSavingData.PlayerBestScore, total - deadBot);
+        PlayerSavingData.PlayerCurrentCoin += deadBot;
+        UIManager.Instance.OpenUI<PopupEndGameCanvas>();
+    }
+
+    public void OnDespawn()
+    {
+        SimplePool.Instance.CollectAll();
+    }
+    
 }

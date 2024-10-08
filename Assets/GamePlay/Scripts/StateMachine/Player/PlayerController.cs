@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using ReuseSystem;
+using ReuseSystem.ObjectPooling;
 using UnityEngine;
 
 public class PlayerController : Character
@@ -147,7 +148,7 @@ public class PlayerController : Character
     
     public Vector3 GetMoveDirectionInput()
     {
-        return new Vector3(joystickInput.Direction.x, 0, joystickInput.Direction.y);
+        return new Vector3(joystickInput.Direction.x, 0, joystickInput.Direction.y).normalized;
     }
 
     public void SetJoyStick(FloatingJoystick joystick)
@@ -166,7 +167,7 @@ public class PlayerController : Character
         stateMachine.ChangeState(playerIdleState);
         rigibody.isKinematic = true;
         rangeBotIndicator.SetActive(false);
-        if(indicator != null) indicator.gameObject.SetActive(false);
+        if(indicator != null) SimplePool.Instance.Despawn(indicator);
     }
 
     public void ReturnSkinShop()
@@ -195,11 +196,17 @@ public class PlayerController : Character
         colliderr.enabled = true;
         stateMachine.ChangeState(playerIdleState);
         
-        if (indicator != null)
-        {
-            indicator.gameObject.SetActive(true);
-            indicator.transform.SetParent(UICanvasWorld.Instance.transform);
-        }
+       
+        indicator = SimplePool.Instance.Spawn<BotIndicator>(GameAssets.Instance.characterIndicator);
+        indicator.Init(Name, currentLevel, CharacterSkin.GetColor(), transform);
+        indicator.transform.SetParent(UICanvasWorld.Instance.transform);
+        
+    }
+
+    public void WinGame()
+    {
+        stateMachine.CurrentState.Exit();
+        PlayAnimation(danceAnim, true); 
     }
 
     public void EquipSkin(EquipmentData data,EquipmentType type)

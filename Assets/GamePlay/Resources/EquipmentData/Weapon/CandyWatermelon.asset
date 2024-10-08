@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91e975c1771768a4587a5485082e41a8, type: 3}
+  m_Name: CandyWatermelon
+  m_EditorClassIdentifier: 
+  id: candyWatermelon
+  cost: 50
+  imageSprite: {fileID: 21300000, guid: b04be71ed05d0714c8e1f5ab0b3d5e8e, type: 3}
+  equipmentType: 2
+  equipmentInPlayerIndex: 4
+  statsAttribute:
+    type: 0
+    amount: 0
+    isPercentage: 0
+  weaponPrefab: {fileID: 8878842142867519124, guid: 4a603dbec2ea39848a13b0259795fd0d, type: 3}
+  weaponName: Candy Watermelon
+  weaponDescription: 

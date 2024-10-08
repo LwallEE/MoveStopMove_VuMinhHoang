@@ -4,7 +4,7 @@ using ReuseSystem.ObjectPooling;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CoinCollect : MonoBehaviour
+public class CoinCollect : GameUnit
 {
     [SerializeField] private RectTransform rect;
     [SerializeField] private float moveSpeed;
@@ -33,6 +33,6 @@ public class CoinCollect : MonoBehaviour
             rect.position = Vector2.Lerp(rect.position, destination, moveSpeed * Time.deltaTime);
             yield return null;
         }
-        LazyPool.Instance.AddObjectToPool(gameObject);
+        SimplePool.Instance.Despawn(this);
     }
 }

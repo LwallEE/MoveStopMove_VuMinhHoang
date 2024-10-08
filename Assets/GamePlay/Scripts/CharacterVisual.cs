@@ -74,7 +74,7 @@ public class CharacterVisual : MonoBehaviour
         }
         //Random weapon
         weaponContainer.DisableAllChild();
-        var weaponData = GameAssets.Instance.EquipmentManager.GetRandomEquipmentData(EquipmentType.Weapon) as WeaponEquipmentData;
+        var weaponData = GameAssets.Instance.EquipmentManager.GetRandomWeaponDataOfBot();
         if (weaponData != null)
         {
            ChangeSkin(EquipmentType.Weapon, null,weaponData.equipmentInPlayerIndex, weaponData.weaponPrefab);

@@ -272,6 +272,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7469a2600c55ca942892f6d3d663dd48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Anim>k__BackingField: {fileID: 7605804218860867138}
+  <CharacterSkin>k__BackingField: {fileID: 7425588988193935197}
   firingPoint: {fileID: 3352723977026559806}
   botInRangeIndicator: {fileID: 7245609258627466223}
   botIdleState: {fileID: 3352723977259773449}
@@ -590,5 +592,21 @@ PrefabInstance:
 --- !u!4 &506440975934694200 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2990524102499574166, guid: e2fe0c9329286bd4fa72afb6348c6075, type: 3}
+  m_PrefabInstance: {fileID: 3352723977887875758}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7425588988193935197 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5299533235924700659, guid: e2fe0c9329286bd4fa72afb6348c6075, type: 3}
+  m_PrefabInstance: {fileID: 3352723977887875758}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 243b251b46a55d14a8489a86f70941df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &7605804218860867138 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5119038144384044268, guid: e2fe0c9329286bd4fa72afb6348c6075, type: 3}
   m_PrefabInstance: {fileID: 3352723977887875758}
   m_PrefabAsset: {fileID: 0}

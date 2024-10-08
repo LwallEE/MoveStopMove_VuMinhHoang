@@ -8,7 +8,12 @@ using UnityEngine;
 public class EquipmentManagerSO : ScriptableObject
 {
    public List<EquipmentData> data;
+   public List<WeaponEquipmentData> weaponDataToRandom;
 
+   public WeaponEquipmentData GetRandomWeaponDataOfBot()
+   {
+      return weaponDataToRandom.GetRandomElement();
+   }
    public EquipmentData GetRandomEquipmentData(EquipmentType type)
    {
       List<EquipmentData> filterData = data.Where(x => x.equipmentType == type).ToList();

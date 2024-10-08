@@ -13,7 +13,8 @@ public class BotController : Character
    [SerializeField] private GameObject botInRangeIndicator;
    private NavMeshAgent agent;
 
-   
+   public Action<BotController> OnDeathAction;
+
    //States
    [SerializeField] private BotIdleState botIdleState;
    [SerializeField] private BotMoveState botMoveState;
@@ -87,13 +88,14 @@ public class BotController : Character
    {
       base.OnDeath();
       stateMachine.ChangeState(botDeathState);
-      SpawnManager.Instance.CallbackOnBotDie();
+      //SpawnManager.Instance.CallbackOnBotDie(this);
+      OnDeathAction?.Invoke(this);
       Invoke(nameof(Disable), 3f);
    }
 
    private void Disable()
    {
-      LazyPool.Instance.AddObjectToPool(gameObject);
+      SimplePool.Instance.Despawn(this);
    }
 
    //TO DO: Update the limit x and z position of map later

@@ -38,6 +38,6 @@ public class PopupEndGameCanvas : UICanvas
 
     public void ChangeToGameHome()
     {
-        GameController.Instance.ChangeGameState(GameState.GameHome);
+        GameController.Instance.OnBackHome();
     }
 }

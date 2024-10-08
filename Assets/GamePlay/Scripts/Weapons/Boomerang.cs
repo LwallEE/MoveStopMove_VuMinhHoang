@@ -43,7 +43,7 @@ public class Boomerang : Weapon
    {
       if (other.CompareTag(Constants.CHARACTER_TAG) && other.transform != sender.transform)
       {
-         other.GetComponent<Character>().OnDeath();
+         Cache.GenCharacters(other).OnDeath();
          sender.LevelUp();
       }
 

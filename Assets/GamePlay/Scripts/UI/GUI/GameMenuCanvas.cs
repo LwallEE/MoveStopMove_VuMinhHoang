@@ -32,16 +32,16 @@ public class GameMenuCanvas : UICanvas
 
     public void SkinShopClick()
     {
-        GameController.Instance.ChangeGameState(GameState.SkinShop);
+        GameController.Instance.OnSkinShop();
     }
 
     public void WeaponShopClick()
     {
-        GameController.Instance.ChangeGameState(GameState.WeaponShop);
+        GameController.Instance.OnWeaponShop();
     }
 
     public void GamePlayClick()
     {
-        GameController.Instance.ChangeGameState(GameState.GamePlay);
+        GameController.Instance.OnPlay();
     }
 }

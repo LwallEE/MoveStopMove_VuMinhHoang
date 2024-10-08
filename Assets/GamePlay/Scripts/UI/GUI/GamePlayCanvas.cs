@@ -8,7 +8,13 @@ public class GamePlayCanvas : UICanvas
 {
     [SerializeField] private FloatingJoystick floatingJoystick;
     [SerializeField] private TextMeshProUGUI aliveTxt;
-    
+
+    public override void Open()
+    {
+        base.Open();
+        floatingJoystick.ResetInput();
+    }
+
     public FloatingJoystick GetFloatingJoystick()
     {
         return floatingJoystick;
@@ -18,4 +24,12 @@ public class GamePlayCanvas : UICanvas
     {
         aliveTxt.text = "Alive: " + number.ToString();
     }
+
+    public void SettingButtonClick()
+    {
+        UIManager.Instance.CloseUI<GamePlayCanvas>();
+        UIManager.Instance.OpenUI<SettingCanvas>();
+    }
+
+   
 }

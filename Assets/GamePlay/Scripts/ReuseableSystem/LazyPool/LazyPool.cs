@@ -49,7 +49,7 @@ namespace ReuseSystem.ObjectPooling
 
             foreach (GameObject g in _poolObj[objKey])
             {
-                if (g.activeSelf)
+                if (g.activeSelf || g.transform.parent != transform)
                     continue;
                 g.SetActive(true);
                 return g;

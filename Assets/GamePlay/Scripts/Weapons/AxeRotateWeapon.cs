@@ -6,11 +6,13 @@ using UnityEngine;
 public class AxeRotateWeapon : Weapon
 {
    private bool isTouchGround;
+   [SerializeField] private GameObject indicator;
    [SerializeField] private float speedFall;
    public override void Init(Vector3 direction, float range, Vector3 firePoint, Character sender,float scale)
    {
       base.Init(direction, range, firePoint, sender,scale);
       isTouchGround = false;
+      indicator.SetActive(false);
    }
 
    protected override void FixedUpdate()
@@ -34,9 +36,10 @@ public class AxeRotateWeapon : Weapon
       if (Vector3.Distance(previousPos, transform.position) > rangeToDisappear)
       {
          Vector3 pos = transform.position;
-         pos.y = 0f;
+         pos.y = 0.1f;
          transform.position = pos;
          isTouchGround = true;
+         indicator.SetActive(true);
          FixRotation();
       }
    }
